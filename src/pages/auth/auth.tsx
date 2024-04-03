@@ -60,17 +60,17 @@ const Authentication: React.FC = () => {
         <form onSubmit={form.onSubmit(handleOnSubmit)}>
           <Paper withBorder shadow="md" p={30} radius="md">
             <Center>
-              <Title order={3} c={`${color.blue_950}`}>
+              <Title order={3} c={`${color.blue_700}`}>
                 Login To Your Account
               </Title>
             </Center>
             <Center>
-              <Text c={`${color.blue_800}`}>
+              <Text c={`${color.blue_700}`}>
                 Enter your username & password to login
               </Text>
             </Center>
             <TextInput
-              c={`${color.blue_800}`}
+              c={`${color.blue_700}`}
               type="email"
               label="Email"
               value={form.values.email}
@@ -84,7 +84,7 @@ const Authentication: React.FC = () => {
             />
 
             <PasswordInput
-              c={`${color.blue_800}`}
+              c={`${color.blue_700}`}
               label="Password"
               placeholder="Your password"
               value={form.values.password}
@@ -96,7 +96,7 @@ const Authentication: React.FC = () => {
               mt="md"
             />
 
-            <Button type="submit" fullWidth mt="xl" bg={`${color.blue_950}`}>
+            <Button type="submit" fullWidth mt="xl" bg={`${color.blue_700}`}>
               Sign in
             </Button>
           </Paper>
