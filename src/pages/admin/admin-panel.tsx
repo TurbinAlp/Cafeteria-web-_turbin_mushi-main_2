@@ -4,6 +4,7 @@ import { useDisclosure } from "@mantine/hooks";
 import HomeHeader from "../../global/components/header";
 import NavigationBar from "../../global/components/nav";
 import { NAV_LINK } from "../../lib/enum";
+import AdminDashboard from "./admin-dashboard";
 
 const AdminPanel: React.FC = () => {
   const [opened, { toggle }] = useDisclosure();
@@ -30,7 +31,10 @@ const AdminPanel: React.FC = () => {
         />
       </AppShell.Navbar>
       <AppShell.Main>
-        <Stack w={"100%"}>{active === NAV_LINK.DASHBOARD && "Dashboard"}</Stack>
+        <Stack w={"100%"}>
+          {active === NAV_LINK.DASHBOARD && <AdminDashboard />}
+          {active === NAV_LINK.MENU && "Menu"}
+        </Stack>
       </AppShell.Main>
     </AppShell>
   );

@@ -1,10 +1,11 @@
-import { IconDashboard, IconLogout } from "@tabler/icons-react";
+import { IconChefHat, IconDashboard, IconLogout } from "@tabler/icons-react";
 import classes from "../css/NavbarSimple.module.css";
 import UseCustomNavigation from "../function/navigation";
 import { NAV_LINK } from "../../lib/enum";
 
 const nav_links = [
   { link: "", label: NAV_LINK.DASHBOARD, icon: IconDashboard },
+  { link: "", label: NAV_LINK.MENU, icon: IconChefHat },
 ];
 
 type NavigationBarProps = {
