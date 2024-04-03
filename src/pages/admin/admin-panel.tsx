@@ -1,7 +1,7 @@
 import React from "react";
-import { AppShell, Burger, Group, Skeleton } from "@mantine/core";
+import { AppShell, Skeleton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { MantineLogo } from "@mantinex/mantine-logo";
+import HomeHeader from "../../global/components/header";
 
 const AdminPanel: React.FC = () => {
   const [opened, { toggle }] = useDisclosure();
@@ -17,10 +17,7 @@ const AdminPanel: React.FC = () => {
       padding="md"
     >
       <AppShell.Header>
-        <Group h="100%" px="md">
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <MantineLogo size={30} />
-        </Group>
+      <HomeHeader opened={opened} toggle={toggle} />
       </AppShell.Header>
       <AppShell.Navbar p="md">
         Navbar
