@@ -1,29 +1,28 @@
-import { Button, Flex, Text } from "@mantine/core";
-import { modals } from "@mantine/modals";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import Authentication from "./pages/auth/auth";
+import { useEffect } from "react";
+import AdminPanel from "./pages/admin/admin-panel";
 
-function App() {
-  const openModal = () =>
-    modals.openConfirmModal({
-      title: "Please confirm your action",
-      size: "sm",
-      radius: "md",
-      withCloseButton: false,
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
 
-      children: (
-        <Text size="sm">
-          This action is so important that you are required to confirm it with a
-          modal. Please click one of these buttons to proceed.
-        </Text>
-      ),
-      labels: { confirm: "Confirm", cancel: "Cancel" },
-      onClose: () => {},
-      onConfirm: () => {},
-    });
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
+const App = () => {
   return (
-    <Flex justify={"center"} align={"center"} h={"100vh"} p={"md"}>
-      <Button onClick={openModal}>Try me</Button>
-    </Flex>
+    <BrowserRouter>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<Authentication />} />
+        <Route path="/home-panel" element={<AdminPanel />} />
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;

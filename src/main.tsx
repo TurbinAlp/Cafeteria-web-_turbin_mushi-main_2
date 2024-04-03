@@ -8,13 +8,14 @@ import { Notifications } from "@mantine/notifications";
 //mantine
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
+import "@mantine/dates/styles.css";
 import { ModalsProvider } from "@mantine/modals";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <MantineProvider defaultColorScheme="light">
-      <Notifications limit={3} position="top-right" />
       <ModalsProvider>
+        <Notifications limit={3} position="top-right" />
         <App />
       </ModalsProvider>
     </MantineProvider>
