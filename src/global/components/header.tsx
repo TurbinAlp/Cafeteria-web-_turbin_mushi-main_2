@@ -12,19 +12,14 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ opened, toggle }) => {
   return (
     <Group h="100%" px="md" justify="space-between">
       <Group>
-        <Burger
-          opened={opened}
-          onClick={toggle}
-          //  hiddenFrom="sm"
-          size="sm"
-        />
+        <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
         <Flex direction={"row"} align={"center"} justify={"center"} gap={"xs"}>
           <Avatar src={`${logo}`} alt="icon" radius="xl" size={50} />
           <Text size="xl">DCTS</Text>
         </Flex>
       </Group>
 
-      <Flex visibleFrom="sm">
+      <Flex >
         <UserButton />
       </Flex>
     </Group>
