@@ -227,11 +227,11 @@ const AdminDashboard: React.FC = () => {
         }}
         closeOnClickOutside={false}
       >
-        <Group justify="start">
+        <SimpleGrid cols={{ base: 3, xs: 4 }}>
           {QUICK_ACTION.map((action: QuickAccessType, index) =>
             quickAction(action, index)
           )}
-        </Group>
+        </SimpleGrid>
       </Modal>
 
       <Modal
