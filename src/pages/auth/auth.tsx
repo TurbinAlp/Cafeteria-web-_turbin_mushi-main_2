@@ -62,7 +62,7 @@ const Authentication: React.FC = () => {
             lineHeight: 1.2,
           }}
         >
-          DICITAL CAFTERIA TRANSACTION SYSTEM (DCTS)
+          DIGITAL CAFTERIA TRANSACTION SYSTEM (DCTS)
         </Title>
 
         <form onSubmit={form.onSubmit(handleOnSubmit)}>
