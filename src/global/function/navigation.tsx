@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const UseCustomNavigation = () => {
+const useCustomNavigation = () => {
   const navigate = useNavigate();
 
   const navigateAdminPanel = () => {
@@ -14,4 +14,4 @@ const UseCustomNavigation = () => {
   return { navigateAdminPanel, logout };
 };
 
-export default UseCustomNavigation;
+export default useCustomNavigation;

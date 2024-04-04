@@ -4,7 +4,7 @@ import { useDisclosure } from "@mantine/hooks";
 import HomeHeader from "../../global/components/header";
 import NavigationBar from "../../global/components/nav";
 import { NAV_LINK } from "../../lib/enum";
-import AdminDashboard from "./admin-dashboard";
+import AdminDashboard from "./dashboard/admin-dashboard";
 import AdminMenu from "./admin-menu";
 
 const AdminPanel: React.FC = () => {

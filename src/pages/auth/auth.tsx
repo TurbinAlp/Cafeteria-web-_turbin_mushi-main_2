@@ -13,10 +13,10 @@ import {
 } from "@mantine/core";
 import { IconPasswordUser, IconUser } from "@tabler/icons-react";
 import { color } from "../../lib/colors";
-import UseCustomNavigation from "../../global/function/navigation";
+import useCustomNavigation from "../../global/function/navigation";
 
 const Authentication: React.FC = () => {
-  const { navigateAdminPanel } = UseCustomNavigation();
+  const { navigateAdminPanel } = useCustomNavigation();
   //FORMS
   const form = useForm({
     initialValues: {

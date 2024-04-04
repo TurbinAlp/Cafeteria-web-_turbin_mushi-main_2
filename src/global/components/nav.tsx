@@ -1,6 +1,6 @@
 import { IconChefHat, IconDashboard, IconLogout } from "@tabler/icons-react";
 import classes from "../css/NavbarSimple.module.css";
-import UseCustomNavigation from "../function/navigation";
+import useCustomNavigation from "../function/navigation";
 import { NAV_LINK } from "../../lib/enum";
 
 const nav_links = [
@@ -14,7 +14,7 @@ type NavigationBarProps = {
 };
 
 const NavigationBar: React.FC<NavigationBarProps> = ({ onClick, active }) => {
-  const { logout } = UseCustomNavigation();
+  const { logout } = useCustomNavigation();
 
   const links = nav_links.map((item) => (
     <a

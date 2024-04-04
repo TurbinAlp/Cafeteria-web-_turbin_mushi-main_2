@@ -4,10 +4,10 @@ import {
   IconLogout2,
   IconUserCircle,
 } from "@tabler/icons-react";
-import UseCustomNavigation from "../function/navigation";
+import useCustomNavigation from "../function/navigation";
 
 export function UserButton() {
-  const { logout } = UseCustomNavigation();
+  const { logout } = useCustomNavigation();
 
   return (
     <UnstyledButton>
