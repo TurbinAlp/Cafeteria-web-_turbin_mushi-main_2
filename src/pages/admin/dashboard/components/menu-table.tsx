@@ -207,7 +207,7 @@ const MenuTable: React.FC = () => {
 
       {/* TABLE */}
 
-      <Table.ScrollContainer minWidth={1000} type="scrollarea" h={380}>
+      <Table.ScrollContainer minWidth={700} type="scrollarea" h={380}>
         <Table horizontalSpacing="md" verticalSpacing="xs" layout="fixed">
           <Table.Tbody>
             <Table.Tr>
