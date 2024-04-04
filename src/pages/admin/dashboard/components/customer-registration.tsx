@@ -118,7 +118,6 @@ const CustomerRegistration: React.FC<CustomerRegistrationProps> = ({
                 form.setFieldValue("email", event.currentTarget.value)
               }
               error={form.errors.email}
-              mt={"md"}
             />
           </Grid.Col>
 
@@ -132,7 +131,6 @@ const CustomerRegistration: React.FC<CustomerRegistrationProps> = ({
                 form.setFieldValue("phoneNumber", event.currentTarget.value)
               }
               error={form.errors.phoneNumber}
-              mt={"md"}
             />
           </Grid.Col>
 
@@ -148,7 +146,6 @@ const CustomerRegistration: React.FC<CustomerRegistrationProps> = ({
                 }
               }}
               error={form.errors.gender}
-              mt={"md"}
             />
           </Grid.Col>
 
@@ -164,7 +161,6 @@ const CustomerRegistration: React.FC<CustomerRegistrationProps> = ({
                 )
               }
               error={form.errors.registrationNumber}
-              mt={"md"}
             />
           </Grid.Col>
 
@@ -178,7 +174,6 @@ const CustomerRegistration: React.FC<CustomerRegistrationProps> = ({
                 form.setFieldValue("cardNumber", event.currentTarget.value)
               }
               error={form.errors.cardNumber}
-              mt={"md"}
             />
           </Grid.Col>
 
@@ -194,7 +189,6 @@ const CustomerRegistration: React.FC<CustomerRegistrationProps> = ({
                 form.setFieldValue("birthDate", dateValue)
               }
               error={form.errors.birthDate}
-              mt={"md"}
             />
           </Grid.Col>
 
@@ -203,7 +197,6 @@ const CustomerRegistration: React.FC<CustomerRegistrationProps> = ({
               direction={"row"}
               align={"center"}
               justify={"center"}
-              mt={"md"}
             >
               <Container w={"80%"} p={0}>
                 <SingleImageUpload
