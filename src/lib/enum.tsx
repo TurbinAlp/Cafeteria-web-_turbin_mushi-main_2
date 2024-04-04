@@ -3,9 +3,10 @@ export enum NAV_LINK {
   MENU = "Menu",
 }
 
-export enum TIME {
+export enum TIME_RANGE {
   TODAY = "Today",
   YESTERDAY = "Yesterday",
+  THIS_WEEK = "This Week",
   THIS_MONTH = "This Month",
   LAST_MONTH = "Last Month",
   LAST_YEAR = "Last Year",
@@ -31,4 +32,9 @@ export enum QUICK_ACTION_LABEL {
 export enum GENDER {
   MALE = "Male",
   FEMALE = "Female",
+}
+
+export enum STATUS {
+  AVAILABLE = "Available",
+  NOT_AVAILABLE = "Not Available",
 }

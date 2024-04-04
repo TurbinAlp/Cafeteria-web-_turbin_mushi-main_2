@@ -20,12 +20,14 @@ import {
   IconDots,
   IconShoppingCart,
 } from "@tabler/icons-react";
-import { QUICK_ACTION_LABEL, TIME } from "../../../lib/enum";
+import { QUICK_ACTION_LABEL, TIME_RANGE } from "../../../lib/enum";
 import useRandomNumberGenerator from "../../../global/function/random-number-generator";
 import { QUICK_ACTION, QuickAccessType } from "../../../lib/quick-action";
 import ReactNodeSwiper from "../../../global/components/reactNote-swiper";
 import { useDisclosure } from "@mantine/hooks";
 import CustomerRegistration from "./components/customer-registration";
+import MenuTable from "./components/menu-table";
+import SellsChart from "./components/sells-chart";
 
 const AdminDashboard: React.FC = () => {
   const { totalSalesGenerator } = useRandomNumberGenerator();
@@ -36,10 +38,14 @@ const AdminDashboard: React.FC = () => {
     { open: openRegisterCustomer, close: closeRegisterCustomer },
   ] = useDisclosure(false);
 
-  const [salesTime, setSalesTime] = useState<TIME | null>(TIME.TODAY);
+  const [salesTime, setSalesTime] = useState<TIME_RANGE | null>(
+    TIME_RANGE.TODAY
+  );
   const [totalSales, setTotalSales] = useState<string>(totalSalesGenerator);
 
-  const [revenueTime, setRevenueTime] = useState<TIME | null>(TIME.TODAY);
+  const [revenueTime, setRevenueTime] = useState<TIME_RANGE | null>(
+    TIME_RANGE.TODAY
+  );
   const [totalRevenue, setTotalRevenue] = useState<string>(totalSalesGenerator);
 
   // NODES
@@ -65,16 +71,17 @@ const AdminDashboard: React.FC = () => {
               label="Filter"
               value={salesTime}
               data={[
-                TIME.TODAY,
-                TIME.YESTERDAY,
-                TIME.THIS_MONTH,
-                TIME.LAST_MONTH,
-                TIME.LAST_YEAR,
+                TIME_RANGE.TODAY,
+                TIME_RANGE.YESTERDAY,
+                TIME_RANGE.THIS_WEEK,
+                TIME_RANGE.THIS_MONTH,
+                TIME_RANGE.LAST_MONTH,
+                TIME_RANGE.LAST_YEAR,
               ]}
               variant="filled"
               onChange={(value: string | null) => {
-                if (Object.values(TIME).includes(value as TIME)) {
-                  setSalesTime(value as TIME);
+                if (Object.values(TIME_RANGE).includes(value as TIME_RANGE)) {
+                  setSalesTime(value as TIME_RANGE);
                   onChangeTime();
                 }
               }}
@@ -125,16 +132,17 @@ const AdminDashboard: React.FC = () => {
               label="Filter"
               value={revenueTime}
               data={[
-                TIME.TODAY,
-                TIME.YESTERDAY,
-                TIME.THIS_MONTH,
-                TIME.LAST_MONTH,
-                TIME.LAST_YEAR,
+                TIME_RANGE.TODAY,
+                TIME_RANGE.YESTERDAY,
+                TIME_RANGE.THIS_WEEK,
+                TIME_RANGE.THIS_MONTH,
+                TIME_RANGE.LAST_MONTH,
+                TIME_RANGE.LAST_YEAR,
               ]}
               variant="filled"
               onChange={(value: string | null) => {
-                if (Object.values(TIME).includes(value as TIME)) {
-                  setRevenueTime(value as TIME);
+                if (Object.values(TIME_RANGE).includes(value as TIME_RANGE)) {
+                  setRevenueTime(value as TIME_RANGE);
                   onChangeRevenue();
                 }
               }}
@@ -287,6 +295,40 @@ const AdminDashboard: React.FC = () => {
             )}
           </SimpleGrid>
         </Paper>
+      </Flex>
+
+      <Space h={"md"} />
+
+      <Flex
+        direction={{ base: "column", xl: "row" }}
+        justify={"space-evenly"}
+        gap={"md"}
+      >
+        <Flex
+          w={{
+            base: "100%",
+            xs: "100%",
+            sm: "100%",
+            md: "100%",
+            lg: "100%",
+            xl: "50%",
+          }}
+          align={"start"}
+        >
+          <MenuTable />
+        </Flex>
+        <Flex
+          w={{
+            base: "100%",
+            xs: "100%",
+            sm: "100%",
+            md: "100%",
+            lg: "100%",
+            xl: "50%",
+          }}
+        >
+          <SellsChart />
+        </Flex>
       </Flex>
     </Container>
   );
