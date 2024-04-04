@@ -10,3 +10,25 @@ export enum TIME {
   LAST_MONTH = "Last Month",
   LAST_YEAR = "Last Year",
 }
+
+export enum DAY_ROUTINE {
+  MORNING = "Morning",
+  AFTERNOON = "Afternoon",
+  NIGHT = "Night",
+}
+
+export enum QUICK_ACTION_LABEL {
+  MENU = "Menu",
+  CARDS = "Cards",
+  STAFFS = "Staffs",
+  COUPONE = "Coupons",
+  REPORTS = "Reports",
+  CUSTOMER_REGISTRATION = "Customer Registration",
+  FEEDBACK = "Feedback",
+  CUSTOMER_CHARGES = "Customer Charges",
+}
+
+export enum GENDER {
+  MALE = "Male",
+  FEMALE = "Female",
+}

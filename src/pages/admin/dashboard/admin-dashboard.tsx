@@ -20,15 +20,21 @@ import {
   IconDots,
   IconShoppingCart,
 } from "@tabler/icons-react";
-import { TIME } from "../../../lib/enum";
+import { QUICK_ACTION_LABEL, TIME } from "../../../lib/enum";
 import useRandomNumberGenerator from "../../../global/function/random-number-generator";
 import { QUICK_ACTION, QuickAccessType } from "../../../lib/quick-action";
 import ReactNodeSwiper from "../../../global/components/reactNote-swiper";
 import { useDisclosure } from "@mantine/hooks";
+import CustomerRegistration from "./components/customer-registration";
 
 const AdminDashboard: React.FC = () => {
   const { totalSalesGenerator } = useRandomNumberGenerator();
-  const [opened, { open, close }] = useDisclosure(false);
+  const [openedAction, { open: openAction, close: closeAction }] =
+    useDisclosure(false);
+  const [
+    openedRegisterCustomer,
+    { open: openRegisterCustomer, close: closeRegisterCustomer },
+  ] = useDisclosure(false);
 
   const [salesTime, setSalesTime] = useState<TIME | null>(TIME.TODAY);
   const [totalSales, setTotalSales] = useState<string>(totalSalesGenerator);
@@ -166,6 +172,7 @@ const AdminDashboard: React.FC = () => {
           flexDirection: "column",
           alignItems: "center",
         }}
+        onClick={() => handleOnClickQuickAction(action.label)}
       >
         <ActionIcon variant="default" size={80} c={`${color.blue_950}`}>
           {action.icon}
@@ -183,6 +190,19 @@ const AdminDashboard: React.FC = () => {
     );
   };
 
+  // FUNCTIONS
+
+  const handleOnClickQuickAction = (label: string) => {
+    if (
+      Object.values(QUICK_ACTION_LABEL).includes(label as QUICK_ACTION_LABEL)
+    ) {
+      if (label === QUICK_ACTION_LABEL.CUSTOMER_REGISTRATION) {
+        closeAction();
+        openRegisterCustomer();
+      }
+    }
+  };
+
   const onChangeTime = () => {
     setTotalSales(totalSalesGenerator);
   };
@@ -194,16 +214,41 @@ const AdminDashboard: React.FC = () => {
   return (
     <Container fluid bg={`${color.transparent}`} w={"100%"} p={0}>
       <Modal
-        opened={opened}
-        onClose={close}
+        opened={openedAction}
+        onClose={closeAction}
         title="Quick Actions"
         radius={"md"}
+        centered
+        withCloseButton
+        transitionProps={{
+          transition: "fade",
+          duration: 600,
+          timingFunction: "linear",
+        }}
+        closeOnClickOutside={false}
       >
         <Group justify="start">
           {QUICK_ACTION.map((action: QuickAccessType, index) =>
             quickAction(action, index)
           )}
         </Group>
+      </Modal>
+
+      <Modal
+        opened={openedRegisterCustomer}
+        onClose={closeRegisterCustomer}
+        title="Customer Registration"
+        radius={"md"}
+        centered
+        withCloseButton
+        transitionProps={{
+          transition: "fade",
+          duration: 600,
+          timingFunction: "linear",
+        }}
+        closeOnClickOutside={false}
+      >
+        <CustomerRegistration closeRegisterCustomer={closeRegisterCustomer} />
       </Modal>
 
       <Flex
@@ -231,7 +276,7 @@ const AdminDashboard: React.FC = () => {
             <Title order={2} c={`${color.blue_950}`}>
               Quick Actions
             </Title>
-            <IconDots onClick={open} style={{ cursor: "pointer" }} />
+            <IconDots onClick={openAction} style={{ cursor: "pointer" }} />
           </Group>
 
           <Space h={"md"} />
