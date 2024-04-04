@@ -127,10 +127,10 @@ const SellsChart: React.FC = () => {
       <Space h={"md"} />
 
       <ResponsiveContainer width={"100%"} height={600}>
-        <BarChart data={stats}>
+        <BarChart data={stats} layout="vertical">
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
+          <XAxis type="number" />
+          <YAxis dataKey="name" type="category" />
           <Tooltip />
           <Legend />
           <Bar dataKey="price" fill={`${color.blue_500}`} />
