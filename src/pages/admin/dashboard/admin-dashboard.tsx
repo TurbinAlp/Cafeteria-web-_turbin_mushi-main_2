@@ -5,6 +5,7 @@ import {
   Flex,
   Group,
   Menu,
+  Modal,
   Paper,
   Select,
   SimpleGrid,
@@ -21,11 +22,14 @@ import {
 } from "@tabler/icons-react";
 import { TIME } from "../../../lib/enum";
 import useRandomNumberGenerator from "../../../global/function/random-number-generator";
-import { QUICK_ACTION } from "../../../lib/quick-action";
+import { QUICK_ACTION, QuickAccessType } from "../../../lib/quick-action";
 import ReactNodeSwiper from "../../../global/components/reactNote-swiper";
+import { useDisclosure } from "@mantine/hooks";
 
 const AdminDashboard: React.FC = () => {
   const { totalSalesGenerator } = useRandomNumberGenerator();
+  const [opened, { open, close }] = useDisclosure(false);
+
   const [salesTime, setSalesTime] = useState<TIME | null>(TIME.TODAY);
   const [totalSales, setTotalSales] = useState<string>(totalSalesGenerator);
 
@@ -153,6 +157,32 @@ const AdminDashboard: React.FC = () => {
     </Paper>
   );
 
+  const quickAction = (action: QuickAccessType, index: number) => {
+    return (
+      <div
+        key={index}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <ActionIcon variant="default" size={80} c={`${color.blue_950}`}>
+          {action.icon}
+        </ActionIcon>
+
+        <Text
+          style={{
+            whiteSpace: "pre-line",
+            textAlign: "center",
+          }}
+        >
+          {action.label}
+        </Text>
+      </div>
+    );
+  };
+
   const onChangeTime = () => {
     setTotalSales(totalSalesGenerator);
   };
@@ -163,6 +193,19 @@ const AdminDashboard: React.FC = () => {
 
   return (
     <Container fluid bg={`${color.transparent}`} w={"100%"} p={0}>
+      <Modal
+        opened={opened}
+        onClose={close}
+        title="Quick Actions"
+        radius={"md"}
+      >
+        <Group justify="start">
+          {QUICK_ACTION.map((action: QuickAccessType, index) =>
+            quickAction(action, index)
+          )}
+        </Group>
+      </Modal>
+
       <Flex
         direction={{ base: "column", lg: "row" }}
         justify={"space-evenly"}
@@ -188,28 +231,15 @@ const AdminDashboard: React.FC = () => {
             <Title order={2} c={`${color.blue_950}`}>
               Quick Actions
             </Title>
-            <IconDots />
+            <IconDots onClick={open} style={{ cursor: "pointer" }} />
           </Group>
 
           <Space h={"md"} />
 
           <SimpleGrid cols={4}>
-            {QUICK_ACTION.slice(0, 4).map((action, index) => (
-              <div
-                key={index}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <ActionIcon variant="default" size={80} c={`${color.blue_950}`}>
-                  {action.icon}
-                </ActionIcon>
-
-                <Text>{action.label}</Text>
-              </div>
-            ))}
+            {QUICK_ACTION.slice(0, 4).map((action: QuickAccessType, index) =>
+              quickAction(action, index)
+            )}
           </SimpleGrid>
         </Paper>
       </Flex>

@@ -10,12 +10,12 @@ import {
 } from "@tabler/icons-react";
 import { ReactNode } from "react";
 
-type quickAccessType = {
+export type QuickAccessType = {
   label: string;
   icon: ReactNode;
 };
 
-export const QUICK_ACTION: quickAccessType[] = [
+export const QUICK_ACTION: QuickAccessType[] = [
   {
     label: "Menu",
     icon: <IconChefHat style={{ width: "70%", height: "70%" }} stroke={1.5} />,
