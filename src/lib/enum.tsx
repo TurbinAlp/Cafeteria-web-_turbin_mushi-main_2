@@ -1,6 +1,7 @@
 export enum NAV_LINK {
   DASHBOARD = "Dashboard",
   MENU = "Menu",
+  STAFF = "Staff",
 }
 
 export enum TIME_RANGE {
@@ -37,4 +38,9 @@ export enum GENDER {
 export enum STATUS {
   AVAILABLE = "Available",
   NOT_AVAILABLE = "Not Available",
+}
+
+export enum CATEGORY {
+  VIP = "VIP",
+  NORMAL = "NORMAL",
 }

@@ -17,7 +17,6 @@ import {
   Group,
   Menu,
   Paper,
-  Select,
   Space,
   Table,
   Title,
@@ -30,6 +29,7 @@ import {
 } from "@tabler/icons-react";
 import { color } from "../../../../lib/colors";
 import { DAY_ROUTINE, STATUS } from "../../../../lib/enum";
+import SelectDayRoutine from "../../../../global/components/day-routine-select";
 
 type menuType = {
   imageUrl: string;
@@ -184,20 +184,13 @@ const MenuTable: React.FC = () => {
           </Menu.Target>
 
           <Menu.Dropdown>
-            <Select
+            <SelectDayRoutine
+              placeholder=""
+              error={null}
+              variant="filled"
               label="Filter"
               value={dayRoutine}
-              data={[
-                DAY_ROUTINE.MORNING,
-                DAY_ROUTINE.AFTERNOON,
-                DAY_ROUTINE.NIGHT,
-              ]}
-              variant="filled"
-              onChange={(value: string | null) => {
-                if (Object.values(DAY_ROUTINE).includes(value as DAY_ROUTINE)) {
-                  setDayRoutine(value as DAY_ROUTINE);
-                }
-              }}
+              onChange={setDayRoutine}
             />
           </Menu.Dropdown>
         </Menu>

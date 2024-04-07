@@ -4,7 +4,6 @@ import {
   Title,
   Divider,
   Menu,
-  Select,
   Space,
 } from "@mantine/core";
 import { IconDots } from "@tabler/icons-react";
@@ -22,6 +21,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import SelectTimeRange from "../../../../global/components/time-range-select";
 
 type statsType = {
   name: string;
@@ -102,23 +102,10 @@ const SellsChart: React.FC = () => {
           </Menu.Target>
 
           <Menu.Dropdown>
-            <Select
+            <SelectTimeRange
               label="Filter"
               value={salesTime}
-              data={[
-                TIME_RANGE.TODAY,
-                TIME_RANGE.YESTERDAY,
-                TIME_RANGE.THIS_WEEK,
-                TIME_RANGE.THIS_MONTH,
-                TIME_RANGE.LAST_MONTH,
-                TIME_RANGE.LAST_YEAR,
-              ]}
-              variant="filled"
-              onChange={(value: string | null) => {
-                if (Object.values(TIME_RANGE).includes(value as TIME_RANGE)) {
-                  setSalesTime(value as TIME_RANGE);
-                }
-              }}
+              onChange={setSalesTime}
             />
           </Menu.Dropdown>
         </Menu>

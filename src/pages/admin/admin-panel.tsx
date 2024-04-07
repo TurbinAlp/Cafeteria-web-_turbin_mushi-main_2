@@ -6,6 +6,7 @@ import NavigationBar from "../../global/components/nav";
 import { NAV_LINK } from "../../lib/enum";
 import AdminDashboard from "./dashboard/admin-dashboard";
 import AdminMenu from "./admin-menu";
+import AdminStaff from "./staffs/admin-staff";
 
 const AdminPanel: React.FC = () => {
   const [opened, { toggle }] = useDisclosure();
@@ -35,6 +36,7 @@ const AdminPanel: React.FC = () => {
         <Stack w={"100%"}>
           {active === NAV_LINK.DASHBOARD && <AdminDashboard />}
           {active === NAV_LINK.MENU && <AdminMenu />}
+          {active === NAV_LINK.STAFF && <AdminStaff />}
         </Stack>
       </AppShell.Main>
     </AppShell>

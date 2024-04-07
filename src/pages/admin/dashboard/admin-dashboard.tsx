@@ -28,6 +28,7 @@ import { useDisclosure } from "@mantine/hooks";
 import CustomerRegistration from "./components/customer-registration";
 import MenuTable from "./components/menu-table";
 import SellsChart from "./components/sells-chart";
+import NewMenu from "./components/new-menu";
 
 const AdminDashboard: React.FC = () => {
   const { totalSalesGenerator } = useRandomNumberGenerator();
@@ -36,6 +37,10 @@ const AdminDashboard: React.FC = () => {
   const [
     openedRegisterCustomer,
     { open: openRegisterCustomer, close: closeRegisterCustomer },
+  ] = useDisclosure(false);
+  const [
+    openedNewMenuModalForm,
+    { open: openNewMenuModalForm, close: closeNewMenuModalForm },
   ] = useDisclosure(false);
 
   const [salesTime, setSalesTime] = useState<TIME_RANGE | null>(
@@ -207,6 +212,10 @@ const AdminDashboard: React.FC = () => {
       if (label === QUICK_ACTION_LABEL.CUSTOMER_REGISTRATION) {
         closeAction();
         openRegisterCustomer();
+      } else if (label === QUICK_ACTION_LABEL.MENU) {
+        closeAction();
+        closeRegisterCustomer();
+        openNewMenuModalForm();
       }
     }
   };
@@ -257,6 +266,25 @@ const AdminDashboard: React.FC = () => {
         closeOnClickOutside={false}
       >
         <CustomerRegistration closeRegisterCustomer={closeRegisterCustomer} />
+      </Modal>
+
+      <Modal
+        opened={openedNewMenuModalForm}
+        onClose={closeNewMenuModalForm}
+        title={<Text c={`${color.blue_950}`}>New Menu</Text>}
+        radius={"md"}
+        centered
+        withCloseButton
+        transitionProps={{
+          transition: "fade",
+          duration: 600,
+          timingFunction: "linear",
+        }}
+        closeOnClickOutside={false}
+      >
+        <Divider size={"sm"} />
+
+        <NewMenu closeNewMenuModalForm={closeNewMenuModalForm} />
       </Modal>
 
       <Flex
