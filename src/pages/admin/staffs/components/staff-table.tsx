@@ -191,7 +191,6 @@ const StaffTable: React.FC = () => {
             onClick={() => {
               setSelectedStaff({ email: row.email, name: row.name });
               open();
-              console.log(row);
             }}
           >
             <IconEye style={{ width: "70%", height: "70%" }} stroke={1.5} />
