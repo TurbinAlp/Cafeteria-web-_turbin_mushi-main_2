@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { STAFF_DATA, STAFF_DATA_TYPE } from "../staff-data";
 import {
+  Anchor,
   Avatar,
   Badge,
   Flex,
@@ -119,16 +120,24 @@ const StaffInformation: React.FC<StaffInformationProps> = ({ data }) => {
                 </Flex>
                 <Flex justify="start" align={"center"} direction={"row"}>
                   <Text w={"35%"}>Mobile</Text>
-                  <Text w={"65%"} c={`${color.dimmed}`}>
+                  <Anchor
+                    w={"65%"}
+                    href={`tell:${selectedStaff?.mobile}`}
+                    lineClamp={1}
+                  >
                     {selectedStaff?.mobile}
-                  </Text>
+                  </Anchor>
                 </Flex>
-                <div style={{ display: "flex" }}>
+                <Flex justify="start" align={"center"} direction={"row"}>
                   <Text w={"35%"}>Email</Text>
-                  <Text w={"65%"} c={`${color.dimmed}`} lineClamp={1}>
+                  <Anchor
+                    w={"65%"}
+                    href={`mailto:${selectedStaff?.email}`}
+                    lineClamp={1}
+                  >
                     {selectedStaff?.email}
-                  </Text>
-                </div>
+                  </Anchor>
+                </Flex>
                 <Flex justify="start" align={"center"} direction={"row"}>
                   <Text w={"35%"}>Status</Text>
                   <Text w={"65%"} c={`${color.dimmed}`}>
