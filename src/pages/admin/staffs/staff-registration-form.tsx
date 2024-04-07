@@ -1,71 +1,73 @@
+import React from "react";
+import useShowAndUpdateNotification from "../../../global/components/show-and-update-notification";
+import { GENDER, ROLE } from "../../../lib/enum";
+import { useForm } from "@mantine/form";
+import { color } from "../../../lib/colors";
+import { IconCheck } from "@tabler/icons-react";
 import {
-  Paper,
-  Container,
-  TextInput,
-  Flex,
   Avatar,
   Button,
+  Container,
+  Flex,
   Grid,
+  Paper,
+  TextInput,
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import SelectGender from "../../../global/components/gender-select";
+import SelectRole from "../../../global/components/role-select";
+import SingleImageUpload from "../../../global/components/single-image-upload";
 import { DateInput, DateValue } from "@mantine/dates";
-import React from "react";
-import SingleImageUpload from "../../../../global/components/single-image-upload";
-import { GENDER } from "../../../../lib/enum";
-import { color } from "../../../../lib/colors";
-import useShowAndUpdateNotification from "../../../../global/components/show-and-update-notification";
-import { IconCheck } from "@tabler/icons-react";
-import SelectGender from "../../../../global/components/gender-select";
 
-type CustomerRegistrationProps = {
-  closeRegisterCustomer: () => void;
+type StaffRegistrationFormProps = {
+  closeStaffRegModalForm: () => void;
 };
 
-const CustomerRegistration: React.FC<CustomerRegistrationProps> = ({
-  closeRegisterCustomer,
+const StaffRegistrationForm: React.FC<StaffRegistrationFormProps> = ({
+  closeStaffRegModalForm,
 }) => {
   const { loadingNotification, updateNotification } =
     useShowAndUpdateNotification();
 
   const form = useForm<{
-    name: string;
+    firstname: string;
+    lastname: string;
     email: string;
-    phoneNumber: string;
+    mobile: string;
     gender: GENDER | null;
-    registrationNumber: string;
-    cardNumber: string;
+    role: ROLE | null;
+    username: string;
     birthDate: Date | null;
     passport: File | null;
   }>({
     initialValues: {
-      name: "",
+      firstname: "",
+      lastname: "",
       email: "",
-      phoneNumber: "",
+      mobile: "",
       gender: null,
-      registrationNumber: "",
-      cardNumber: "",
+      role: null,
+      username: "",
       birthDate: null,
       passport: null,
     },
     validate: {
-      name: (val) => (val.length > 5 ? null : "Name is too short"),
+      firstname: (val) => (val.length > 0 ? null : "First name is required"),
+      lastname: (val) => (val.length > 0 ? null : "Last name is required"),
       email: (val) =>
         /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(val)
           ? null
           : "Invalid email",
-      phoneNumber: (val) =>
-        /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im.test(val)
+      mobile: (val) =>
+        /^(\+?255|0)\d{9}$/.test(val)
           ? null
-          : "Invalid phone number",
-      gender: (val) => (val === null ? "Please select a gender" : null),
-      registrationNumber: (val) =>
-        val.length === 0 ? "Please enter registration number" : null,
-      cardNumber: (val) =>
-        val.length === 0 ? "Please select a card number" : null,
-
-      passport: (val) => (!val ? "Please upload your passport" : null),
+          : "Invalid Tanzanian mobile number",
+      gender: (val) => (val !== null ? null : "Please select a gender"),
+      role: (val) => (val !== null ? null : "Please select a role"),
+      username: (val) =>
+        /^[a-zA-Z0-9_]+$/.test(val) ? null : "Invalid username format",
       birthDate: (val) =>
-        val === null ? "Please input your birth date" : null,
+        val !== null ? null : "Please select your birthdate",
+      passport: (val) => (val !== null ? null : "Please upload your passport"),
     },
   });
 
@@ -74,46 +76,59 @@ const CustomerRegistration: React.FC<CustomerRegistrationProps> = ({
       id: "register",
       message: "Please wait, we are saving your details.",
       color: color.blue_500,
-      title: "Registration",
+      title: "Staff Registration",
     });
 
     updateNotification({
       id: "register",
       message: "Successfully registered",
       color: color.green,
-      title: "Registration",
+      title: "Staff Registration",
       delay: 5000,
       icon: <IconCheck size="1rem" />,
     });
 
     setTimeout(() => {
-      closeRegisterCustomer();
+      closeStaffRegModalForm();
     }, 1000);
   };
 
   return (
-    <Paper p={"md"} shadow="xs" radius={"md"} w={"100%"}>
+    <Paper p={"md"} radius={"md"} w={"100%"}>
       <form onSubmit={form.onSubmit(handleOnSubmit)}>
         <Grid>
-          <Grid.Col span={{ base: 12 }}>
+          <Grid.Col span={{ base: 12, md: 6 }}>
             <TextInput
               type="text"
-              label="Name"
-              value={form.values.name}
-              placeholder="Your name"
+              label=""
+              value={form.values.firstname}
+              placeholder="First Name"
               onChange={(event) =>
-                form.setFieldValue("name", event.currentTarget.value)
+                form.setFieldValue("firstname", event.currentTarget.value)
               }
-              error={form.errors.name}
+              error={form.errors.firstname}
+            />
+          </Grid.Col>
+
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            <TextInput
+              type="text"
+              label=""
+              value={form.values.lastname}
+              placeholder="Last Name"
+              onChange={(event) =>
+                form.setFieldValue("lastname", event.currentTarget.value)
+              }
+              error={form.errors.lastname}
             />
           </Grid.Col>
 
           <Grid.Col span={{ base: 12, md: 6 }}>
             <TextInput
               type="email"
-              label="Email"
+              label=""
               value={form.values.email}
-              placeholder="you@gmail.com"
+              placeholder="Email"
               onChange={(event) =>
                 form.setFieldValue("email", event.currentTarget.value)
               }
@@ -124,20 +139,20 @@ const CustomerRegistration: React.FC<CustomerRegistrationProps> = ({
           <Grid.Col span={{ base: 12, md: 6 }}>
             <TextInput
               type="tel"
-              label="Phone number"
-              value={form.values.phoneNumber}
-              placeholder="eg. +255777777777"
+              label=""
+              value={form.values.mobile}
+              placeholder="mobile"
               onChange={(event) =>
-                form.setFieldValue("phoneNumber", event.currentTarget.value)
+                form.setFieldValue("mobile", event.currentTarget.value)
               }
-              error={form.errors.phoneNumber}
+              error={form.errors.mobile}
             />
           </Grid.Col>
 
           <Grid.Col span={{ base: 12, md: 6 }}>
             <SelectGender
               variant="default"
-              label="Gender"
+              label=""
               value={form.values.gender}
               placeholder="Select Gender"
               onChange={(value) => form.setFieldValue("gender", value)}
@@ -146,37 +161,33 @@ const CustomerRegistration: React.FC<CustomerRegistrationProps> = ({
           </Grid.Col>
 
           <Grid.Col span={{ base: 12, md: 6 }}>
-            <TextInput
-              label="Registration Number"
-              value={form.values.registrationNumber}
-              placeholder="registration Number"
-              onChange={(event) =>
-                form.setFieldValue(
-                  "registrationNumber",
-                  event.currentTarget.value
-                )
-              }
-              error={form.errors.registrationNumber}
+            <SelectRole
+              placeholder="Role"
+              error={form.errors.role}
+              variant="default"
+              label=""
+              value={form.values.role}
+              onChange={(value) => form.setFieldValue("role", value)}
             />
           </Grid.Col>
 
           <Grid.Col span={{ base: 12, md: 6 }}>
             <TextInput
-              type="number"
-              label="Card Number"
-              value={form.values.cardNumber}
-              placeholder="Type here"
+              type="text"
+              label=""
+              value={form.values.username}
+              placeholder="username"
               onChange={(event) =>
-                form.setFieldValue("cardNumber", event.currentTarget.value)
+                form.setFieldValue("username", event.currentTarget.value)
               }
-              error={form.errors.cardNumber}
+              error={form.errors.username}
             />
           </Grid.Col>
 
           <Grid.Col span={{ base: 12, md: 6 }}>
             <DateInput
               value={form.values.birthDate}
-              label="Date of birth"
+              label=""
               placeholder="DD MMM YYYY"
               valueFormat="DD MMM YYYY"
               // maxDate={dayjs(new Date()).subtract(17, "years").toDate()}
@@ -195,7 +206,7 @@ const CustomerRegistration: React.FC<CustomerRegistrationProps> = ({
                   description=""
                   error={form.errors.passport}
                   value={form.values.passport}
-                  label="Upload Passport"
+                  label=""
                   onChange={(file: File | null) => {
                     if (file) {
                       form.setFieldValue("passport", file);
@@ -203,7 +214,7 @@ const CustomerRegistration: React.FC<CustomerRegistrationProps> = ({
                       form.setFieldValue("passport", null);
                     }
                   }}
-                  placeholder="Customer Passport"
+                  placeholder="Choose passport"
                   key={form.values.passport ? "" : form.values.passport}
                 />
               </Container>
@@ -229,12 +240,12 @@ const CustomerRegistration: React.FC<CustomerRegistrationProps> = ({
             fullWidth
             bg={`${color.red}`}
             mt="xl"
-            onClick={closeRegisterCustomer}
+            onClick={closeStaffRegModalForm}
           >
             Cancel
           </Button>
           <Button type="submit" fullWidth mt="xl">
-            Save
+            Submit
           </Button>
         </Flex>
       </form>
@@ -242,4 +253,4 @@ const CustomerRegistration: React.FC<CustomerRegistrationProps> = ({
   );
 };
 
-export default CustomerRegistration;
+export default StaffRegistrationForm;

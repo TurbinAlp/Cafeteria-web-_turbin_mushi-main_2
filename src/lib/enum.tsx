@@ -38,9 +38,15 @@ export enum GENDER {
 export enum STATUS {
   AVAILABLE = "Available",
   NOT_AVAILABLE = "Not Available",
+  ACTIVE = "Active",
+  INACTIVE = "Inactive",
 }
 
 export enum CATEGORY {
   VIP = "VIP",
   NORMAL = "NORMAL",
+}
+
+export enum ROLE {
+  CASHIER = "Cashier",
 }
