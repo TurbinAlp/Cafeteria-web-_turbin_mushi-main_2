@@ -7,6 +7,11 @@ export type STAFF_DATA_TYPE = {
   role: ROLE;
   status: STATUS;
   passport: string;
+  course: string;
+  academicYear: string;
+  gender: string;
+  address: string;
+  birthDate: string; // Assuming birth date is represented as a string
 };
 
 export const STAFF_DATA: STAFF_DATA_TYPE[] = [
@@ -18,6 +23,11 @@ export const STAFF_DATA: STAFF_DATA_TYPE[] = [
     status: STATUS.ACTIVE,
     passport:
       "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png",
+    course: "Accounting",
+    academicYear: "2022/2023",
+    gender: "Female",
+    address: "Dar es Salaam, Tanzania",
+    birthDate: "1990-05-15",
   },
   {
     name: "Rashid Salum",
@@ -27,6 +37,11 @@ export const STAFF_DATA: STAFF_DATA_TYPE[] = [
     status: STATUS.ACTIVE,
     passport:
       "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png",
+    course: "Marketing",
+    academicYear: "2021/2022",
+    gender: "Male",
+    address: "Arusha, Tanzania",
+    birthDate: "1987-09-22",
   },
   {
     name: "Aisha Said",
@@ -36,6 +51,11 @@ export const STAFF_DATA: STAFF_DATA_TYPE[] = [
     status: STATUS.INACTIVE,
     passport:
       "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-3.png",
+    course: "Computer Science",
+    academicYear: "2023/2024",
+    gender: "Female",
+    address: "Dodoma, Tanzania",
+    birthDate: "1995-03-10",
   },
   {
     name: "Hamisi Juma",
@@ -45,6 +65,11 @@ export const STAFF_DATA: STAFF_DATA_TYPE[] = [
     status: STATUS.INACTIVE,
     passport:
       "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-9.png",
+    course: "Engineering",
+    academicYear: "2022/2023",
+    gender: "Male",
+    address: "Zanzibar, Tanzania",
+    birthDate: "1988-11-30",
   },
   {
     name: "Zainab Ali",
@@ -54,6 +79,11 @@ export const STAFF_DATA: STAFF_DATA_TYPE[] = [
     status: STATUS.ACTIVE,
     passport:
       "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-10.png",
+    course: "Medicine",
+    academicYear: "2021/2022",
+    gender: "Female",
+    address: "Mwanza, Tanzania",
+    birthDate: "1992-07-05",
   },
   {
     name: "Ahmed Mwinyi",
@@ -63,6 +93,11 @@ export const STAFF_DATA: STAFF_DATA_TYPE[] = [
     status: STATUS.INACTIVE,
     passport:
       "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png",
+    course: "Law",
+    academicYear: "2023/2024",
+    gender: "Male",
+    address: "Mbeya, Tanzania",
+    birthDate: "1993-12-18",
   },
   {
     name: "Neema Hassan",
@@ -72,6 +107,11 @@ export const STAFF_DATA: STAFF_DATA_TYPE[] = [
     status: STATUS.ACTIVE,
     passport:
       "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png",
+    course: "Finance",
+    academicYear: "2022/2023",
+    gender: "Female",
+    address: "Kilimanjaro, Tanzania",
+    birthDate: "1989-08-25",
   },
   {
     name: "Juma Ali",
@@ -81,6 +121,11 @@ export const STAFF_DATA: STAFF_DATA_TYPE[] = [
     status: STATUS.ACTIVE,
     passport:
       "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-3.png",
+    course: "Education",
+    academicYear: "2021/2022",
+    gender: "Male",
+    address: "Morogoro, Tanzania",
+    birthDate: "1986-04-17",
   },
   {
     name: "Mariam Juma",
@@ -90,6 +135,11 @@ export const STAFF_DATA: STAFF_DATA_TYPE[] = [
     status: STATUS.INACTIVE,
     passport:
       "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-9.png",
+    course: "Psychology",
+    academicYear: "2023/2024",
+    gender: "Female",
+    address: "Tanga, Tanzania",
+    birthDate: "1994-10-12",
   },
   {
     name: "Hassan Said",
@@ -99,5 +149,10 @@ export const STAFF_DATA: STAFF_DATA_TYPE[] = [
     status: STATUS.ACTIVE,
     passport:
       "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-10.png",
+    course: "Information Technology",
+    academicYear: "2022/2023",
+    gender: "Male",
+    address: "Singida, Tanzania",
+    birthDate: "1991-01-29",
   },
 ];

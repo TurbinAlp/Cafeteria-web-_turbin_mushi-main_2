@@ -142,7 +142,6 @@ const MenuTable: React.FC = () => {
           <ActionIcon
             variant="default"
             // color={m.status === STATUS.AVAILABLE ? color.green : color.red}
-            aria-label="Settings"
             size={"lg"}
           >
             {m.status === STATUS.AVAILABLE ? (

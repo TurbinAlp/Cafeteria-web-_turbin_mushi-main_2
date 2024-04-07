@@ -4,9 +4,11 @@ import {
   Avatar,
   Badge,
   Center,
-  Collapse,
+  Divider,
   Flex,
   Group,
+  Menu,
+  Modal,
   Paper,
   Table,
   Text,
@@ -22,6 +24,8 @@ import {
   IconSearch,
   IconSelector,
   IconSettings,
+  IconStatusChange,
+  IconTrash,
 } from "@tabler/icons-react";
 import React, { useState } from "react";
 import classes from "../css/TableSort.module.css";
@@ -29,6 +33,7 @@ import { STAFF_DATA, STAFF_DATA_TYPE } from "../staff-data";
 import { useDisclosure } from "@mantine/hooks";
 import { STATUS } from "../../../../lib/enum";
 import { color } from "../../../../lib/colors";
+import StaffInformation from "./staff-information";
 
 interface ThProps {
   children: React.ReactNode;
@@ -99,7 +104,12 @@ const StaffTable: React.FC = () => {
   const [sortBy, setSortBy] = useState<keyof STAFF_DATA_TYPE | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
-  const [opened, { toggle }] = useDisclosure(false);
+
+  const [openedStaffInfo, { open, close }] = useDisclosure(false);
+  const [selectedStaff, setSelectedStaff] = useState<{
+    email: string;
+    name: string;
+  } | null>(null);
 
   const handleMouseEnter = (index: number) => {
     setHoveredItem(index);
@@ -128,7 +138,7 @@ const StaffTable: React.FC = () => {
     );
   };
 
-  const rows = sortedData.map((row, index) => (
+  const rows = sortedData.map((row: STAFF_DATA_TYPE, index) => (
     <Table.Tr
       key={row.name}
       onMouseEnter={() => handleMouseEnter(index)}
@@ -147,10 +157,6 @@ const StaffTable: React.FC = () => {
               <Text size="sm" fw={500}>
                 {row.name}
               </Text>
-
-              {/* <Text c="dimmed" size="xs">
-                {row.email}
-              </Text> */}
             </div>
           </Flex>
         </UnstyledButton>
@@ -178,16 +184,75 @@ const StaffTable: React.FC = () => {
         )}
       </Table.Td>
       <Table.Td>
-        <Flex justify={"center"} align={"center"} gap={"md"}>
-          <IconEye />
-          <IconSettings />
-        </Flex>
+        <Group>
+          <ActionIcon
+            variant="light"
+            size={"lg"}
+            onClick={() => {
+              setSelectedStaff({ email: row.email, name: row.name });
+              open();
+              console.log(row);
+            }}
+          >
+            <IconEye style={{ width: "70%", height: "70%" }} stroke={1.5} />
+          </ActionIcon>
+
+          <Menu position="bottom" withArrow width={200} shadow="md">
+            <Menu.Target>
+              <ActionIcon variant="light" size={"lg"}>
+                <IconSettings
+                  style={{ width: "70%", height: "70%" }}
+                  stroke={1.5}
+                />
+              </ActionIcon>
+            </Menu.Target>
+            <Menu.Dropdown>
+              <Menu.Item c={`${color.dimmed}`}>Actions</Menu.Item>
+              <Menu.Item>
+                <Group>
+                  <IconStatusChange />
+                  {row.status === STATUS.ACTIVE
+                    ? STATUS.INACTIVE
+                    : STATUS.ACTIVE}
+                </Group>
+              </Menu.Item>
+              <Menu.Item>
+                <Group c={`${color.red}`}>
+                  <IconTrash />
+                  <Text>Delete</Text>
+                </Group>
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
+        </Group>
       </Table.Td>
     </Table.Tr>
   ));
 
   return (
     <div>
+      <Modal
+        opened={openedStaffInfo}
+        onClose={close}
+        title={
+          <Text c={`${color.blue_950}`}>{selectedStaff?.name} Information</Text>
+        }
+        radius={"md"}
+        centered
+        size={"xl"}
+        withCloseButton
+        transitionProps={{
+          transition: "fade",
+          duration: 600,
+          timingFunction: "lRegistrationinear",
+        }}
+        closeOnClickOutside={false}
+      >
+        <Divider size={"sm"} />
+
+        <StaffInformation data={{ email: selectedStaff?.email }} />
+      </Modal>
+
       <Paper p={30} radius="md" shadow="sm">
         <Flex justify="space-between" gap={"md"}>
           <TextInput
@@ -203,71 +268,55 @@ const StaffTable: React.FC = () => {
             onChange={handleSearchChange}
             w={{ base: "100%", sm: "100%", md: "60%", lg: "50%", xl: "40%" }}
           />
-
-          <ActionIcon size="lg" variant="default" onClick={toggle}>
-            {opened ? (
-              <IconChevronDown
-                style={{ width: "70%", height: "70%" }}
-                stroke={1.5}
-              />
-            ) : (
-              <IconChevronUp
-                style={{ width: "70%", height: "70%" }}
-                stroke={1.5}
-              />
-            )}
-          </ActionIcon>
         </Flex>
-        <Collapse in={opened}>
-          <Table.ScrollContainer minWidth={1500} type="native">
-            <Table horizontalSpacing="md" verticalSpacing="xs" layout="fixed">
-              <Table.Tbody>
-                <Table.Tr bg={`${color.blue_100}`}>
-                  <Th
-                    sorted={sortBy === "name"}
-                    reversed={reverseSortDirection}
-                    onSort={() => setSorting("name")}
-                  >
-                    Name
-                  </Th>
-                  <Th
-                    sorted={sortBy === "email"}
-                    reversed={reverseSortDirection}
-                    onSort={() => setSorting("email")}
-                  >
-                    Email
-                  </Th>
-                  <Th
-                    sorted={sortBy === "mobile"}
-                    reversed={reverseSortDirection}
-                    onSort={() => setSorting("mobile")}
-                  >
-                    Mobile
-                  </Th>
-                  <Th
-                    sorted={sortBy === "role"}
-                    reversed={reverseSortDirection}
-                    onSort={() => setSorting("role")}
-                  >
-                    Role
-                  </Th>
+        <Table.ScrollContainer minWidth={1500} type="native">
+          <Table horizontalSpacing="md" verticalSpacing="xs" layout="fixed">
+            <Table.Tbody>
+              <Table.Tr bg={`${color.blue_100}`}>
+                <Th
+                  sorted={sortBy === "name"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("name")}
+                >
+                  Name
+                </Th>
+                <Th
+                  sorted={sortBy === "email"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("email")}
+                >
+                  Email
+                </Th>
+                <Th
+                  sorted={sortBy === "mobile"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("mobile")}
+                >
+                  Mobile
+                </Th>
+                <Th
+                  sorted={sortBy === "role"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("role")}
+                >
+                  Role
+                </Th>
 
-                  <Th
-                    sorted={sortBy === "status"}
-                    reversed={reverseSortDirection}
-                    onSort={() => setSorting("status")}
-                  >
-                    Street
-                  </Th>
-                  <Th sorted={false} reversed={false} onSort={() => {}}>
-                    Actions
-                  </Th>
-                </Table.Tr>
-              </Table.Tbody>
-              <Table.Tbody>{rows}</Table.Tbody>
-            </Table>
-          </Table.ScrollContainer>
-        </Collapse>
+                <Th
+                  sorted={sortBy === "status"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("status")}
+                >
+                  Street
+                </Th>
+                <Th sorted={false} reversed={false} onSort={() => {}}>
+                  Actions
+                </Th>
+              </Table.Tr>
+            </Table.Tbody>
+            <Table.Tbody>{rows}</Table.Tbody>
+          </Table>
+        </Table.ScrollContainer>
       </Paper>
     </div>
   );
