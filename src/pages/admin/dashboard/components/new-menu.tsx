@@ -172,7 +172,7 @@ const NewMenu: React.FC<CustomerRegistrationProps> = ({
             Cancel
           </Button>
           <Button type="submit" fullWidth mt="xl">
-            Save
+            Submit
           </Button>
         </Flex>
       </form>
