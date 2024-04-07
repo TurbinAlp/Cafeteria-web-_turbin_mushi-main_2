@@ -82,56 +82,56 @@ const StaffInformation: React.FC<StaffInformationProps> = ({ data }) => {
 
               <div style={{ gap: 6 }}>
                 <Flex justify="start" align={"center"} direction={"row"}>
-                  <Text w={"40%"}>Full Name</Text>
-                  <Text w={"60%"} c={`${color.dimmed}`}>
+                  <Text w={"35%"}>Full Name</Text>
+                  <Text w={"65%"} c={`${color.dimmed}`}>
                     {selectedStaff?.name}
                   </Text>
                 </Flex>
                 <Flex justify="start" align={"center"} direction={"row"}>
-                  <Text w={"40%"}>Course</Text>
-                  <Text w={"60%"} c={`${color.dimmed}`}>
+                  <Text w={"35%"}>Course</Text>
+                  <Text w={"65%"} c={`${color.dimmed}`}>
                     {selectedStaff?.course}
                   </Text>
                 </Flex>
                 <Flex justify="start" align={"center"} direction={"row"}>
-                  <Text w={"40%"}>Academic Year</Text>
-                  <Text w={"60%"} c={`${color.dimmed}`}>
+                  <Text w={"35%"}>Academic Year</Text>
+                  <Text w={"65%"} c={`${color.dimmed}`}>
                     {selectedStaff?.academicYear}
                   </Text>
                 </Flex>
                 <Flex justify="start" align={"center"} direction={"row"}>
-                  <Text w={"40%"}>Gender</Text>
-                  <Text w={"60%"} c={`${color.dimmed}`}>
+                  <Text w={"35%"}>Gender</Text>
+                  <Text w={"65%"} c={`${color.dimmed}`}>
                     {selectedStaff?.gender}
                   </Text>
                 </Flex>
                 <Flex justify="start" align={"center"} direction={"row"}>
-                  <Text w={"40%"}>Address</Text>
-                  <Text w={"60%"} c={`${color.dimmed}`}>
+                  <Text w={"35%"}>Address</Text>
+                  <Text w={"65%"} c={`${color.dimmed}`}>
                     {selectedStaff?.address}
                   </Text>
                 </Flex>
                 <Flex justify="start" align={"center"} direction={"row"}>
-                  <Text w={"40%"}>Date Of Birth</Text>
-                  <Text w={"60%"} c={`${color.dimmed}`}>
+                  <Text w={"35%"}>Birth Date</Text>
+                  <Text w={"65%"} c={`${color.dimmed}`}>
                     {selectedStaff?.birthDate}
                   </Text>
                 </Flex>
                 <Flex justify="start" align={"center"} direction={"row"}>
-                  <Text w={"40%"}>Phone Number</Text>
-                  <Text w={"60%"} c={`${color.dimmed}`}>
+                  <Text w={"35%"}>Mobile</Text>
+                  <Text w={"65%"} c={`${color.dimmed}`}>
                     {selectedStaff?.mobile}
                   </Text>
                 </Flex>
                 <div style={{ display: "flex" }}>
-                  <Text w={"40%"}>Email</Text>
-                  <Text w={"60%"} c={`${color.dimmed}`}>
+                  <Text w={"35%"}>Email</Text>
+                  <Text w={"65%"} c={`${color.dimmed}`} lineClamp={1}>
                     {selectedStaff?.email}
                   </Text>
                 </div>
                 <Flex justify="start" align={"center"} direction={"row"}>
-                  <Text w={"40%"}>Status</Text>
-                  <Text w={"60%"} c={`${color.dimmed}`}>
+                  <Text w={"35%"}>Status</Text>
+                  <Text w={"65%"} c={`${color.dimmed}`}>
                     {selectedStaff?.status === STATUS.ACTIVE ? (
                       <Badge bg={`${color.green}`} w={120} py={"xs"}>
                         {selectedStaff?.status}
