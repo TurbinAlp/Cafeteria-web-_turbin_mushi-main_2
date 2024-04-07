@@ -92,19 +92,6 @@ const NewMenu: React.FC<CustomerRegistrationProps> = ({
           </Grid.Col>
 
           <Grid.Col span={{ base: 12, md: 6 }}>
-            <TextInput
-              type="number"
-              label="Price"
-              value={form.values.price}
-              placeholder="name"
-              onChange={(event) =>
-                form.setFieldValue("price", event.currentTarget.value)
-              }
-              error={form.errors.price}
-            />
-          </Grid.Col>
-
-          <Grid.Col span={{ base: 12, md: 6 }}>
             <SelectDayRoutine
               placeholder="Available hours"
               error={form.errors.availableHours}
@@ -115,7 +102,7 @@ const NewMenu: React.FC<CustomerRegistrationProps> = ({
             />
           </Grid.Col>
 
-          <Grid.Col span={{ base: 12 }}>
+          <Grid.Col span={{ base: 12, md: 6 }}>
             <SelectCategory
               placeholder="Food category"
               error={form.errors.foodCategory}
@@ -123,6 +110,19 @@ const NewMenu: React.FC<CustomerRegistrationProps> = ({
               label="Food Category"
               value={form.values.foodCategory}
               onChange={(value) => form.setFieldValue("foodCategory", value)}
+            />
+          </Grid.Col>
+
+          <Grid.Col span={{ base: 12 }}>
+            <TextInput
+              type="number"
+              label="Price"
+              value={form.values.price}
+              placeholder="name"
+              onChange={(event) =>
+                form.setFieldValue("price", event.currentTarget.value)
+              }
+              error={form.errors.price}
             />
           </Grid.Col>
 
