@@ -56,7 +56,14 @@ const StaffInformation: React.FC<StaffInformationProps> = ({ data }) => {
               <Title order={2} c={`${color.blue_950}`}>
                 {selectedStaff?.name}
               </Title>
-              <Text c={`${color.dimmed}`}>
+              <Text
+                c={`${color.dimmed}`}
+                style={{
+                  whiteSpace: "pre-line",
+                  textAlign: "center",
+                  lineHeight: 1.2,
+                }}
+              >
                 Bachelor of Science in Information Systems
               </Text>
             </div>
@@ -77,9 +84,19 @@ const StaffInformation: React.FC<StaffInformationProps> = ({ data }) => {
             <Space h={"md"} />
 
             <Tabs.Panel value="OverView">
-              <Title order={3} c={`${color.blue_800}`}>
+              <Title
+                order={3}
+                c={`${color.blue_800}`}
+                style={{
+                  whiteSpace: "pre-line",
+                  textAlign: "center",
+                  lineHeight: 1.2,
+                }}
+              >
                 Showing {selectedStaff?.name}'s details{" "}
               </Title>
+
+              <Space h={"xs"} />
 
               <div style={{ gap: 6 }}>
                 <Flex justify="start" align={"center"} direction={"row"}>
