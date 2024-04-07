@@ -64,7 +64,7 @@ const StaffInformation: React.FC<StaffInformationProps> = ({ data }) => {
                   lineHeight: 1.2,
                 }}
               >
-                Bachelor of Science in Information Systems
+                {selectedStaff?.course}
               </Text>
             </div>
           </Flex>
