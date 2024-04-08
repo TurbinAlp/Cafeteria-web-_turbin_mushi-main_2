@@ -17,7 +17,7 @@ import {
   rem,
 } from "@mantine/core";
 import React, { useState } from "react";
-import classes from "../css/TableSort.module.css";
+import classes from "../../../../global/css/TableSort.module.css";
 import { color } from "../../../../lib/colors";
 import {
   IconChevronDown,

@@ -28,7 +28,7 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import React, { useState } from "react";
-import classes from "../css/TableSort.module.css";
+import classes from "../../../../global/css/TableSort.module.css";
 import { STAFF_DATA, STAFF_DATA_TYPE } from "../staff-data";
 import { useDisclosure } from "@mantine/hooks";
 import { STATUS } from "../../../../lib/enum";
