@@ -11,7 +11,7 @@ import Customer from "./customers/customer";
 
 const AdminPanel: React.FC = () => {
   const [opened, { toggle }] = useDisclosure();
-  const [active, setActive] = useState<NAV_LINK>(NAV_LINK.CUSTOMER);
+  const [active, setActive] = useState<NAV_LINK>(NAV_LINK.DASHBOARD);
 
   return (
     <AppShell
