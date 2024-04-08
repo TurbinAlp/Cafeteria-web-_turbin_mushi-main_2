@@ -2,6 +2,7 @@ export enum NAV_LINK {
   DASHBOARD = "Dashboard",
   MENU = "Menu",
   STAFF = "Staff",
+  CUSTOMER = "Customer",
 }
 
 export enum TIME_RANGE {

@@ -25,7 +25,7 @@ import useRandomNumberGenerator from "../../../global/function/random-number-gen
 import { QUICK_ACTION, QuickAccessType } from "../../../lib/quick-action";
 import ReactNodeSwiper from "../../../global/components/reactNote-swiper";
 import { useDisclosure } from "@mantine/hooks";
-import CustomerRegistration from "./components/customer-registration";
+import CustomerRegistration from "../../../global/components/customer-registration";
 import MenuTable from "./components/menu-table";
 import SellsChart from "./components/sells-chart";
 import NewMenu from "./components/new-menu";

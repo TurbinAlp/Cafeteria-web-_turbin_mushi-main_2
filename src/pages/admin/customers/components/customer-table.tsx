@@ -2,7 +2,6 @@ import {
   ActionIcon,
   Anchor,
   Avatar,
-  Badge,
   Center,
   Divider,
   Flex,
@@ -17,6 +16,9 @@ import {
   keys,
   rem,
 } from "@mantine/core";
+import React, { useState } from "react";
+import classes from "../css/TableSort.module.css";
+import { color } from "../../../../lib/colors";
 import {
   IconChevronDown,
   IconChevronUp,
@@ -24,16 +26,11 @@ import {
   IconSearch,
   IconSelector,
   IconSettings,
-  IconStatusChange,
   IconTrash,
 } from "@tabler/icons-react";
-import React, { useState } from "react";
-import classes from "../css/TableSort.module.css";
-import { STAFF_DATA, STAFF_DATA_TYPE } from "../staff-data";
+import { CUSTOMER_DATA, CUSTOMER_TYPE } from "./data";
 import { useDisclosure } from "@mantine/hooks";
-import { STATUS } from "../../../../lib/enum";
-import { color } from "../../../../lib/colors";
-import StaffInformation from "./staff-information";
+import CustomerInformation from "./customer-information";
 
 interface ThProps {
   children: React.ReactNode;
@@ -64,7 +61,7 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
   );
 }
 
-function filterData(data: STAFF_DATA_TYPE[], search: string) {
+function filterData(data: CUSTOMER_TYPE[], search: string) {
   const query = search.toLowerCase().trim();
   return data.filter((item) =>
     keys(data[0]).some((key) => item[key].toLowerCase().includes(query))
@@ -72,9 +69,9 @@ function filterData(data: STAFF_DATA_TYPE[], search: string) {
 }
 
 function sortData(
-  data: STAFF_DATA_TYPE[],
+  data: CUSTOMER_TYPE[],
   payload: {
-    sortBy: keyof STAFF_DATA_TYPE | null;
+    sortBy: keyof CUSTOMER_TYPE | null;
     reversed: boolean;
     search: string;
   }
@@ -98,10 +95,11 @@ function sortData(
 }
 
 //   MAIN FUNCTION
-const StaffTable: React.FC = () => {
+
+const CustomerTable: React.FC = () => {
   const [search, setSearch] = useState("");
-  const [sortedData, setSortedData] = useState(STAFF_DATA);
-  const [sortBy, setSortBy] = useState<keyof STAFF_DATA_TYPE | null>(null);
+  const [sortedData, setSortedData] = useState(CUSTOMER_DATA);
+  const [sortBy, setSortBy] = useState<keyof CUSTOMER_TYPE | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
 
@@ -119,18 +117,18 @@ const StaffTable: React.FC = () => {
     setHoveredItem(null);
   };
 
-  const setSorting = (field: keyof STAFF_DATA_TYPE) => {
+  const setSorting = (field: keyof CUSTOMER_TYPE) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);
     setSortBy(field);
-    setSortedData(sortData(STAFF_DATA, { sortBy: field, reversed, search }));
+    setSortedData(sortData(CUSTOMER_DATA, { sortBy: field, reversed, search }));
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget;
     setSearch(value);
     setSortedData(
-      sortData(STAFF_DATA, {
+      sortData(CUSTOMER_DATA, {
         sortBy,
         reversed: reverseSortDirection,
         search: value,
@@ -138,7 +136,7 @@ const StaffTable: React.FC = () => {
     );
   };
 
-  const rows = sortedData.map((row: STAFF_DATA_TYPE, index) => (
+  const rows = sortedData.map((row: CUSTOMER_TYPE, index) => (
     <Table.Tr
       key={row.name}
       onMouseEnter={() => handleMouseEnter(index)}
@@ -162,27 +160,19 @@ const StaffTable: React.FC = () => {
         </UnstyledButton>
       </Table.Td>
       <Table.Td>
-        <Anchor fz="sm" href={`mailto:${row.email}`}>
+        <Anchor fz="sm" href={`mailto:${row.email}`} lineClamp={1}>
           {row.email}
         </Anchor>
       </Table.Td>
       <Table.Td>
-        <Anchor fz="sm" href={`tell:${row.mobile}`}>
-          {row.mobile}
+        <Anchor fz="sm" href={`tell:${row.phoneNumber}`}>
+          {row.phoneNumber}
         </Anchor>
       </Table.Td>
-      <Table.Td>{row.role}</Table.Td>
-      <Table.Td>
-        {row.status === STATUS.ACTIVE ? (
-          <Badge bg={`${color.green}`} w={120} py={"xs"}>
-            {row.status}
-          </Badge>
-        ) : (
-          <Badge bg={`${color.red}`} w={120} py={"xs"}>
-            {row.status}
-          </Badge>
-        )}
-      </Table.Td>
+      <Table.Td>{row.gender}</Table.Td>
+      <Table.Td>{row.registrationNumber}</Table.Td>
+      <Table.Td>{row.cardNumber}</Table.Td>
+
       <Table.Td>
         <Group>
           <ActionIcon
@@ -207,14 +197,7 @@ const StaffTable: React.FC = () => {
             </Menu.Target>
             <Menu.Dropdown>
               <Menu.Item c={`${color.dimmed}`}>Actions</Menu.Item>
-              <Menu.Item>
-                <Group>
-                  <IconStatusChange />
-                  {row.status === STATUS.ACTIVE
-                    ? STATUS.INACTIVE
-                    : STATUS.ACTIVE}
-                </Group>
-              </Menu.Item>
+
               <Menu.Item>
                 <Group c={`${color.red}`}>
                   <IconTrash />
@@ -249,7 +232,7 @@ const StaffTable: React.FC = () => {
       >
         <Divider size={"sm"} />
 
-        <StaffInformation data={{ email: selectedStaff?.email }} />
+        <CustomerInformation data={{ email: selectedStaff?.email }} />
       </Modal>
 
       <Paper p={30} radius="md" shadow="sm">
@@ -287,27 +270,35 @@ const StaffTable: React.FC = () => {
                   Email
                 </Th>
                 <Th
-                  sorted={sortBy === "mobile"}
+                  sorted={sortBy === "phoneNumber"}
                   reversed={reverseSortDirection}
-                  onSort={() => setSorting("mobile")}
+                  onSort={() => setSorting("phoneNumber")}
                 >
-                  Mobile
+                  Phone Number
                 </Th>
                 <Th
-                  sorted={sortBy === "role"}
+                  sorted={sortBy === "gender"}
                   reversed={reverseSortDirection}
-                  onSort={() => setSorting("role")}
+                  onSort={() => setSorting("gender")}
                 >
-                  Role
+                  Gender
                 </Th>
 
                 <Th
-                  sorted={sortBy === "status"}
+                  sorted={sortBy === "registrationNumber"}
                   reversed={reverseSortDirection}
-                  onSort={() => setSorting("status")}
+                  onSort={() => setSorting("registrationNumber")}
                 >
-                  Street
+                  Registrstion Number
                 </Th>
+                <Th
+                  sorted={sortBy === "cardNumber"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("cardNumber")}
+                >
+                  Card Number
+                </Th>
+
                 <Th sorted={false} reversed={false} onSort={() => {}}>
                   Actions
                 </Th>
@@ -321,4 +312,4 @@ const StaffTable: React.FC = () => {
   );
 };
 
-export default StaffTable;
+export default CustomerTable;

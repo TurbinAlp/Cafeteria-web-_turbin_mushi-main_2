@@ -10,12 +10,12 @@ import {
 import { useForm } from "@mantine/form";
 import { DateInput, DateValue } from "@mantine/dates";
 import React from "react";
-import SingleImageUpload from "../../../../global/components/single-image-upload";
-import { GENDER } from "../../../../lib/enum";
-import { color } from "../../../../lib/colors";
-import useShowAndUpdateNotification from "../../../../global/components/show-and-update-notification";
+import SingleImageUpload from "./single-image-upload";
+import { GENDER } from "../../lib/enum";
+import { color } from "../../lib/colors";
+import useShowAndUpdateNotification from "./show-and-update-notification";
 import { IconCheck } from "@tabler/icons-react";
-import SelectGender from "../../../../global/components/gender-select";
+import SelectGender from "./gender-select";
 
 type CustomerRegistrationProps = {
   closeRegisterCustomer: () => void;

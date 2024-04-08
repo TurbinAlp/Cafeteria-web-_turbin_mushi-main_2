@@ -7,10 +7,11 @@ import { NAV_LINK } from "../../lib/enum";
 import AdminDashboard from "./dashboard/admin-dashboard";
 import AdminMenu from "./admin-menu";
 import AdminStaff from "./staffs/admin-staff";
+import Customer from "./customers/customer";
 
 const AdminPanel: React.FC = () => {
   const [opened, { toggle }] = useDisclosure();
-  const [active, setActive] = useState<NAV_LINK>(NAV_LINK.DASHBOARD);
+  const [active, setActive] = useState<NAV_LINK>(NAV_LINK.CUSTOMER);
 
   return (
     <AppShell
@@ -37,6 +38,7 @@ const AdminPanel: React.FC = () => {
           {active === NAV_LINK.DASHBOARD && <AdminDashboard />}
           {active === NAV_LINK.MENU && <AdminMenu />}
           {active === NAV_LINK.STAFF && <AdminStaff />}
+          {active === NAV_LINK.CUSTOMER && <Customer />}
         </Stack>
       </AppShell.Main>
     </AppShell>
