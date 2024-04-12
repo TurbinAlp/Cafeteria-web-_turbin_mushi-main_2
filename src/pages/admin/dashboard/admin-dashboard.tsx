@@ -19,6 +19,7 @@ import {
   IconCurrencyDollar,
   IconDots,
   IconShoppingCart,
+  IconTransferOut,
 } from "@tabler/icons-react";
 import { QUICK_ACTION_LABEL, TIME_RANGE } from "../../../lib/enum";
 import useRandomNumberGenerator from "../../../global/function/random-number-generator";
@@ -29,11 +30,12 @@ import CustomerRegistration from "../../../global/components/customer-registrati
 import MenuTable from "./components/menu-table";
 import SellsChart from "./components/sells-chart";
 import NewMenu from "./components/new-menu";
+import SelectTimeRange from "../../../global/components/time-range-select";
+import YearlySalesStats from "./components/yearly-sales-stats";
 
 const AdminDashboard: React.FC = () => {
   const { totalSalesGenerator } = useRandomNumberGenerator();
-  const [openedAction, { open: openAction, close: closeAction }] =
-    useDisclosure(false);
+  const [openedAction, { close: closeAction }] = useDisclosure(false);
   const [
     openedRegisterCustomer,
     { open: openRegisterCustomer, close: closeRegisterCustomer },
@@ -52,6 +54,12 @@ const AdminDashboard: React.FC = () => {
     TIME_RANGE.TODAY
   );
   const [totalRevenue, setTotalRevenue] = useState<string>(totalSalesGenerator);
+
+  const [expenditureTime, setExpenditureTime] = useState<TIME_RANGE | null>(
+    TIME_RANGE.TODAY
+  );
+  const [totalExpenditure, setTotalExpenditure] =
+    useState<string>(totalSalesGenerator);
 
   // NODES
   const sales = (
@@ -176,6 +184,53 @@ const AdminDashboard: React.FC = () => {
     </Paper>
   );
 
+  const expenditure = (
+    <Paper p={"md"} shadow="md" w={"100%"} h={150} radius={"md"}>
+      <Group justify="space-between">
+        <Group>
+          <Title order={2} c={`${color.blue_950}`}>
+            Expenditure
+          </Title>
+          <Divider orientation="vertical" size={"lg"} />
+          <Title order={3} c={`${color.dimmed}`}>
+            {expenditureTime}
+          </Title>
+        </Group>
+        <Menu position="bottom" withArrow width={200} shadow="md">
+          <Menu.Target>
+            <IconDots />
+          </Menu.Target>
+
+          <Menu.Dropdown>
+            <SelectTimeRange
+              label="Filter"
+              value={expenditureTime}
+              onChange={(value) => onChangeExpenditure(value)}
+            />
+          </Menu.Dropdown>
+        </Menu>
+      </Group>
+
+      <Space h={"md"} />
+
+      <Group>
+        <ActionIcon
+          variant="default"
+          aria-label="Settings"
+          radius={"xl"}
+          size={"xl"}
+        >
+          <IconTransferOut
+            style={{ width: "70%", height: "70%" }}
+            stroke={1.5}
+          />
+        </ActionIcon>
+
+        <Title order={2}>{totalExpenditure} Tshs</Title>
+      </Group>
+    </Paper>
+  );
+
   const quickAction = (action: QuickAccessType, index: number) => {
     return (
       <div
@@ -228,8 +283,13 @@ const AdminDashboard: React.FC = () => {
     setTotalRevenue(totalSalesGenerator);
   };
 
+  const onChangeExpenditure = (value: TIME_RANGE) => {
+    setExpenditureTime(value);
+    setTotalExpenditure(totalSalesGenerator);
+  };
+
   return (
-    <Container fluid bg={`${color.transparent}`} w={"100%"} p={0}>
+    <Container size={"xl"} bg={`${color.transparent}`} w={"100%"} p={0}>
       <Modal
         opened={openedAction}
         onClose={closeAction}
@@ -287,20 +347,19 @@ const AdminDashboard: React.FC = () => {
         <NewMenu closeNewMenuModalForm={closeNewMenuModalForm} />
       </Modal>
 
-      <Flex
+      <ReactNodeSwiper node={[sales, revenue, expenditure]} />
+
+      {/* <Flex
         direction={{ base: "column", lg: "row" }}
         justify={"space-evenly"}
         gap={"md"}
       >
-        {/* STATS CARDS */}
         <Flex
           w={{ base: "100%", lg: 500, xl: 800 }}
           direction={{ base: "column", md: "row" }}
           gap={"md"}
           align={"center"}
-        >
-          <ReactNodeSwiper node={[sales, revenue]} />
-        </Flex>
+        ></Flex>
 
         <Paper
           p={"md"}
@@ -323,7 +382,7 @@ const AdminDashboard: React.FC = () => {
             )}
           </SimpleGrid>
         </Paper>
-      </Flex>
+      </Flex> */}
 
       <Space h={"md"} />
 
@@ -343,7 +402,7 @@ const AdminDashboard: React.FC = () => {
           }}
           align={"start"}
         >
-          <MenuTable />
+          <YearlySalesStats />
         </Flex>
         <Flex
           w={{
@@ -355,9 +414,13 @@ const AdminDashboard: React.FC = () => {
             xl: "50%",
           }}
         >
-          <SellsChart />
+          <MenuTable />
         </Flex>
       </Flex>
+
+      <Space h={"md"} />
+
+      <SellsChart />
     </Container>
   );
 };

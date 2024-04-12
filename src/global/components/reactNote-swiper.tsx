@@ -29,7 +29,7 @@ const ReactNodeSwiper: React.FC<ReactNodeSwiperProps> = ({ node }) => {
     >
       {node.map((nd, index) => {
         return (
-          <SwiperSlide style={{ width: 350, height: "100%" }} key={index}>
+          <SwiperSlide style={{ width: 400, height: "100%" }} key={index}>
             {nd}
           </SwiperSlide>
         );

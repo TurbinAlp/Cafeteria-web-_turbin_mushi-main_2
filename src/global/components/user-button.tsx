@@ -47,14 +47,7 @@ export function UserButton() {
         </Menu.Target>
 
         <Menu.Dropdown>
-          <Menu.Item
-            leftSection={
-              <IconLogout2 style={{ width: rem(14), height: rem(14) }} />
-            }
-            onClick={logout}
-          >
-            <Text>Logout</Text>
-          </Menu.Item>
+          
 
           <Menu.Item
             leftSection={
@@ -62,6 +55,15 @@ export function UserButton() {
             }
           >
             <Text>Profile</Text>
+          </Menu.Item>
+
+          <Menu.Item
+            leftSection={
+              <IconLogout2 style={{ width: rem(14), height: rem(14) }} />
+            }
+            onClick={logout}
+          >
+            <Text>Logout</Text>
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>

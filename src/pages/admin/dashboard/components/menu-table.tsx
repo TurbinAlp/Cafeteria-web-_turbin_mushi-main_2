@@ -10,7 +10,6 @@ import wali_makange_nyama from "../../../../assets/wali makange nyama.jpeg";
 import wali_samaki from "../../../../assets/wali samaki.jpeg";
 import useRandomNumberGenerator from "../../../../global/function/random-number-generator";
 import {
-  ActionIcon,
   Avatar,
   Badge,
   Divider,
@@ -21,12 +20,7 @@ import {
   Table,
   Title,
 } from "@mantine/core";
-import {
-  IconDots,
-  IconEye,
-  IconEyeOff,
-  IconSettings,
-} from "@tabler/icons-react";
+import { IconDots } from "@tabler/icons-react";
 import { color } from "../../../../lib/colors";
 import { DAY_ROUTINE, STATUS } from "../../../../lib/enum";
 import SelectDayRoutine from "../../../../global/components/day-routine-select";
@@ -111,59 +105,36 @@ const MenuTable: React.FC = () => {
     },
   ];
 
-  const row = menu.map((m, index) => (
-    <Table.Tr
-      key={index}
-      onMouseEnter={() => handleMouseEnter(index)}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        backgroundColor:
-          hoveredItem === index ? color.semi_transparent_blue : color.white,
-      }}
-    >
-      <Table.Td>
-        <Avatar src={m.imageUrl} radius="md" size={"lg"} />
-      </Table.Td>
-      <Table.Td>{m.name}</Table.Td>
-      <Table.Td>{m.price} Tshs</Table.Td>
-      <Table.Td>
-        {m.status === STATUS.AVAILABLE ? (
-          <Badge bg={`${color.green}`} w={120} py={"xs"}>
-            {m.status}
-          </Badge>
-        ) : (
-          <Badge bg={`${color.red}`} w={120} py={"xs"}>
-            {m.status}
-          </Badge>
-        )}
-      </Table.Td>
-      <Table.Td>
-        <Group>
-          <ActionIcon
-            variant="default"
-            // color={m.status === STATUS.AVAILABLE ? color.green : color.red}
-            size={"lg"}
-          >
-            {m.status === STATUS.AVAILABLE ? (
-              <IconEye style={{ width: "70%", height: "70%" }} stroke={1.5} />
-            ) : (
-              <IconEyeOff
-                style={{ width: "70%", height: "70%" }}
-                stroke={1.5}
-              />
-            )}
-          </ActionIcon>
-
-          <ActionIcon variant="default" size={"lg"}>
-            <IconSettings
-              style={{ width: "70%", height: "70%" }}
-              stroke={1.5}
-            />
-          </ActionIcon>
-        </Group>
-      </Table.Td>
-    </Table.Tr>
-  ));
+  const row = menu
+    .filter((f) => f.status === STATUS.NOT_AVAILABLE)
+    .map((m, index) => (
+      <Table.Tr
+        key={index}
+        onMouseEnter={() => handleMouseEnter(index)}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          backgroundColor:
+            hoveredItem === index ? color.semi_transparent_blue : color.white,
+        }}
+      >
+        <Table.Td>
+          <Avatar src={m.imageUrl} radius="md" size={"lg"} />
+        </Table.Td>
+        <Table.Td>{m.name}</Table.Td>
+        <Table.Td>{m.price} Tshs</Table.Td>
+        <Table.Td>
+          {m.status === STATUS.AVAILABLE ? (
+            <Badge bg={`${color.green}`} w={120} py={"xs"}>
+              {m.status}
+            </Badge>
+          ) : (
+            <Badge bg={`${color.red}`} w={120} py={"xs"}>
+              {m.status}
+            </Badge>
+          )}
+        </Table.Td>
+      </Table.Tr>
+    ));
 
   return (
     <Paper p={"md"} shadow="md" w={"100%"} radius={"md"}>
@@ -199,7 +170,7 @@ const MenuTable: React.FC = () => {
 
       {/* TABLE */}
 
-      <Table.ScrollContainer minWidth={700} type="scrollarea" h={380}>
+      <Table.ScrollContainer minWidth={700} type="scrollarea" mah={380}>
         <Table horizontalSpacing="md" verticalSpacing="xs" layout="fixed">
           <Table.Tbody>
             <Table.Tr>
@@ -207,7 +178,6 @@ const MenuTable: React.FC = () => {
               <Table.Th>Food Name</Table.Th>
               <Table.Th>Price</Table.Th>
               <Table.Th>Status</Table.Th>
-              <Table.Th>Actions</Table.Th>
             </Table.Tr>
           </Table.Tbody>
           <Table.Tbody>{row}</Table.Tbody>
