@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "@mantine/form";
 import {
   Container,
@@ -11,12 +11,25 @@ import {
   Flex,
   Center,
 } from "@mantine/core";
-import { IconPasswordUser, IconUser } from "@tabler/icons-react";
+import { IconCheck, IconPasswordUser, IconUser } from "@tabler/icons-react";
 import { color } from "../../lib/colors";
+import AuthContext from "../../context/auth-context";
+import DotLoader from "../../global/components/dot-loader";
+import useShowAndUpdateNotification from "../../global/components/show-and-update-notification";
 import useCustomNavigation from "../../global/function/navigation";
 
 const Authentication: React.FC = () => {
+  const authContext = useContext(AuthContext);
+
+  if (!authContext) {
+    throw new Error("AuthContext is not defined");
+  }
+
+  const { loginUnser, loading, setLoading } = authContext;
+
+  const { showNotification } = useShowAndUpdateNotification();
   const { navigateAdminPanel } = useCustomNavigation();
+
   //FORMS
   const form = useForm({
     initialValues: {
@@ -38,7 +51,25 @@ const Authentication: React.FC = () => {
 
   const handleOnSubmit = () => {
     form.reset();
-    navigateAdminPanel();
+
+    const success = loginUnser({
+      email: form.values.email,
+      password: form.values.password,
+    });
+
+    if (success !== null) {
+      setTimeout(() => {
+        showNotification({
+          id: "login",
+          message: success,
+          title: "Authentication",
+          color: color.green,
+          icon: <IconCheck />,
+        });
+        setLoading(false);
+        navigateAdminPanel();
+      }, 5000);
+    }
   };
 
   return (
@@ -52,6 +83,7 @@ const Authentication: React.FC = () => {
         alignItems: "center",
       }}
     >
+      {loading && <DotLoader />}
       <Flex direction={"column"} justify={"center"} align={"center"} gap={"md"}>
         <Title
           order={2}

@@ -50,4 +50,5 @@ export enum CATEGORY {
 
 export enum ROLE {
   CASHIER = "Cashier",
+  ADMIN = "Admin",
 }

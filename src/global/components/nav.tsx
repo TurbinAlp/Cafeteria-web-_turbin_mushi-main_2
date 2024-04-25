@@ -6,8 +6,9 @@ import {
   IconUserHeart,
 } from "@tabler/icons-react";
 import classes from "../css/NavbarSimple.module.css";
-import useCustomNavigation from "../function/navigation";
 import { NAV_LINK } from "../../lib/enum";
+import AuthContext from "../../context/auth-context";
+import { useContext } from "react";
 
 const nav_links = [
   { link: "", label: NAV_LINK.DASHBOARD, icon: IconDashboard },
@@ -22,7 +23,13 @@ type NavigationBarProps = {
 };
 
 const NavigationBar: React.FC<NavigationBarProps> = ({ onClick, active }) => {
-  const { logout } = useCustomNavigation();
+  const authContext = useContext(AuthContext);
+
+  if (!authContext) {
+    throw new Error("AuthContext is not defined");
+  }
+
+  const { logoutUser } = authContext;
 
   const links = nav_links.map((item) => (
     <a
@@ -50,7 +57,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ onClick, active }) => {
           className={classes.link}
           onClick={(event) => {
             event.preventDefault();
-            logout();
+            logoutUser();
           }}
         >
           <IconLogout className={classes.linkIcon} stroke={1.5} />

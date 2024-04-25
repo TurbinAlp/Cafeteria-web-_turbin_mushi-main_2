@@ -4,7 +4,7 @@ const useCustomNavigation = () => {
   const navigate = useNavigate();
 
   const navigateAdminPanel = () => {
-    navigate("/home-panel", { replace: false });
+    navigate("/admin-panel", { replace: false });
   };
 
   const logout = () => {

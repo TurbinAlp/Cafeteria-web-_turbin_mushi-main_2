@@ -4,10 +4,17 @@ import {
   IconLogout2,
   IconUserCircle,
 } from "@tabler/icons-react";
-import useCustomNavigation from "../function/navigation";
+import AuthContext from "../../context/auth-context";
+import { useContext } from "react";
 
 export function UserButton() {
-  const { logout } = useCustomNavigation();
+  const authContext = useContext(AuthContext);
+
+  if (!authContext) {
+    throw new Error("AuthContext is not defined");
+  }
+
+  const { user, logoutUser } = authContext;
 
   return (
     <UnstyledButton>
@@ -32,11 +39,11 @@ export function UserButton() {
               justify={"center"}
             >
               <Text size="sm" fw={500}>
-                Bill Headbanger
+                {user?.name}
               </Text>
 
               <Text c="dimmed" size="xs">
-                headbanger@outlook.com
+                {user?.email}
               </Text>
             </Flex>
             <IconChevronDown
@@ -47,8 +54,6 @@ export function UserButton() {
         </Menu.Target>
 
         <Menu.Dropdown>
-          
-
           <Menu.Item
             leftSection={
               <IconUserCircle style={{ width: rem(14), height: rem(14) }} />
@@ -61,7 +66,7 @@ export function UserButton() {
             leftSection={
               <IconLogout2 style={{ width: rem(14), height: rem(14) }} />
             }
-            onClick={logout}
+            onClick={logoutUser}
           >
             <Text>Logout</Text>
           </Menu.Item>
