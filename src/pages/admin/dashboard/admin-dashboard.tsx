@@ -5,12 +5,9 @@ import {
   Flex,
   Group,
   Menu,
-  Modal,
   Paper,
   Select,
-  SimpleGrid,
   Space,
-  Text,
   Title,
 } from "@mantine/core";
 import React, { useState } from "react";
@@ -21,29 +18,16 @@ import {
   IconShoppingCart,
   IconTransferOut,
 } from "@tabler/icons-react";
-import { QUICK_ACTION_LABEL, TIME_RANGE } from "../../../lib/enum";
+import { TIME_RANGE } from "../../../lib/enum";
 import useRandomNumberGenerator from "../../../global/function/random-number-generator";
-import { QUICK_ACTION, QuickAccessType } from "../../../lib/quick-action";
 import ReactNodeSwiper from "../../../global/components/reactNote-swiper";
-import { useDisclosure } from "@mantine/hooks";
-import CustomerRegistration from "../../../global/components/customer-registration";
 import MenuTable from "./components/menu-table";
 import SellsChart from "./components/sells-chart";
-import NewMenu from "./components/new-menu";
 import SelectTimeRange from "../../../global/components/time-range-select";
 import YearlySalesStats from "./components/yearly-sales-stats";
 
 const AdminDashboard: React.FC = () => {
   const { totalSalesGenerator } = useRandomNumberGenerator();
-  const [openedAction, { close: closeAction }] = useDisclosure(false);
-  const [
-    openedRegisterCustomer,
-    { open: openRegisterCustomer, close: closeRegisterCustomer },
-  ] = useDisclosure(false);
-  const [
-    openedNewMenuModalForm,
-    { open: openNewMenuModalForm, close: closeNewMenuModalForm },
-  ] = useDisclosure(false);
 
   const [salesTime, setSalesTime] = useState<TIME_RANGE | null>(
     TIME_RANGE.TODAY
@@ -231,49 +215,49 @@ const AdminDashboard: React.FC = () => {
     </Paper>
   );
 
-  const quickAction = (action: QuickAccessType, index: number) => {
-    return (
-      <div
-        key={index}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-        onClick={() => handleOnClickQuickAction(action.label)}
-      >
-        <ActionIcon variant="default" size={80} c={`${color.blue_950}`}>
-          {action.icon}
-        </ActionIcon>
+  // const quickAction = (action: QuickAccessType, index: number) => {
+  //   return (
+  //     <div
+  //       key={index}
+  //       style={{
+  //         display: "flex",
+  //         flexDirection: "column",
+  //         alignItems: "center",
+  //       }}
+  //       onClick={() => handleOnClickQuickAction(action.label)}
+  //     >
+  //       <ActionIcon variant="default" size={80} c={`${color.blue_950}`}>
+  //         {action.icon}
+  //       </ActionIcon>
 
-        <Text
-          style={{
-            whiteSpace: "pre-line",
-            textAlign: "center",
-          }}
-        >
-          {action.label}
-        </Text>
-      </div>
-    );
-  };
+  //       <Text
+  //         style={{
+  //           whiteSpace: "pre-line",
+  //           textAlign: "center",
+  //         }}
+  //       >
+  //         {action.label}
+  //       </Text>
+  //     </div>
+  //   );
+  // };
 
   // FUNCTIONS
 
-  const handleOnClickQuickAction = (label: string) => {
-    if (
-      Object.values(QUICK_ACTION_LABEL).includes(label as QUICK_ACTION_LABEL)
-    ) {
-      if (label === QUICK_ACTION_LABEL.CUSTOMER_REGISTRATION) {
-        closeAction();
-        openRegisterCustomer();
-      } else if (label === QUICK_ACTION_LABEL.MENU) {
-        closeAction();
-        closeRegisterCustomer();
-        openNewMenuModalForm();
-      }
-    }
-  };
+  // const handleOnClickQuickAction = (label: string) => {
+  //   if (
+  //     Object.values(QUICK_ACTION_LABEL).includes(label as QUICK_ACTION_LABEL)
+  //   ) {
+  //     if (label === QUICK_ACTION_LABEL.CUSTOMER_REGISTRATION) {
+  //       closeAction();
+  //       openRegisterCustomer();
+  //     } else if (label === QUICK_ACTION_LABEL.MENU) {
+  //       closeAction();
+  //       closeRegisterCustomer();
+  //       openNewMenuModalForm();
+  //     }
+  //   }
+  // };
 
   const onChangeTime = () => {
     setTotalSales(totalSalesGenerator);
@@ -290,99 +274,7 @@ const AdminDashboard: React.FC = () => {
 
   return (
     <Container size={"xl"} bg={`${color.transparent}`} w={"100%"} p={0}>
-      <Modal
-        opened={openedAction}
-        onClose={closeAction}
-        title="Quick Actions"
-        radius={"md"}
-        centered
-        withCloseButton
-        transitionProps={{
-          transition: "fade",
-          duration: 600,
-          timingFunction: "linear",
-        }}
-        closeOnClickOutside={false}
-      >
-        <SimpleGrid cols={{ base: 3, xs: 4 }}>
-          {QUICK_ACTION.map((action: QuickAccessType, index) =>
-            quickAction(action, index)
-          )}
-        </SimpleGrid>
-      </Modal>
-
-      <Modal
-        opened={openedRegisterCustomer}
-        onClose={closeRegisterCustomer}
-        title="Customer Registration"
-        radius={"md"}
-        centered
-        withCloseButton
-        transitionProps={{
-          transition: "fade",
-          duration: 600,
-          timingFunction: "linear",
-        }}
-        closeOnClickOutside={false}
-      >
-        <CustomerRegistration closeRegisterCustomer={closeRegisterCustomer} />
-      </Modal>
-
-      <Modal
-        opened={openedNewMenuModalForm}
-        onClose={closeNewMenuModalForm}
-        title={<Text c={`${color.blue_950}`}>New Menu</Text>}
-        radius={"md"}
-        centered
-        withCloseButton
-        transitionProps={{
-          transition: "fade",
-          duration: 600,
-          timingFunction: "linear",
-        }}
-        closeOnClickOutside={false}
-      >
-        <Divider size={"sm"} />
-
-        <NewMenu closeNewMenuModalForm={closeNewMenuModalForm} />
-      </Modal>
-
       <ReactNodeSwiper node={[sales, revenue, expenditure]} />
-
-      {/* <Flex
-        direction={{ base: "column", lg: "row" }}
-        justify={"space-evenly"}
-        gap={"md"}
-      >
-        <Flex
-          w={{ base: "100%", lg: 500, xl: 800 }}
-          direction={{ base: "column", md: "row" }}
-          gap={"md"}
-          align={"center"}
-        ></Flex>
-
-        <Paper
-          p={"md"}
-          shadow="xs"
-          radius={"md"}
-          w={{ base: "100%", lg: 500, xl: 500 }}
-        >
-          <Group justify="space-between">
-            <Title order={2} c={`${color.blue_950}`}>
-              Quick Actions
-            </Title>
-            <IconDots onClick={openAction} style={{ cursor: "pointer" }} />
-          </Group>
-
-          <Space h={"md"} />
-
-          <SimpleGrid cols={4}>
-            {QUICK_ACTION.slice(0, 4).map((action: QuickAccessType, index) =>
-              quickAction(action, index)
-            )}
-          </SimpleGrid>
-        </Paper>
-      </Flex> */}
 
       <Space h={"md"} />
 

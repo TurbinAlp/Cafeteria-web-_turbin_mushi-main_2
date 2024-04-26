@@ -5,7 +5,7 @@ import HomeHeader from "../../global/components/header";
 import NavigationBar from "../../global/components/nav";
 import { NAV_LINK } from "../../lib/enum";
 import AdminDashboard from "./dashboard/admin-dashboard";
-import AdminMenu from "./admin-menu";
+import AdminMenu from "./menu/admin-menu";
 import AdminStaff from "./staffs/admin-staff";
 import Customer from "./customers/customer";
 

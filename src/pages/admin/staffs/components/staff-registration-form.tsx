@@ -1,8 +1,8 @@
-import React from "react";
-import useShowAndUpdateNotification from "../../../global/components/show-and-update-notification";
-import { GENDER, ROLE } from "../../../lib/enum";
+import React, { useContext } from "react";
+import useShowAndUpdateNotification from "../../../../global/components/show-and-update-notification";
+import { GENDER, ROLE } from "../../../../lib/enum";
 import { useForm } from "@mantine/form";
-import { color } from "../../../lib/colors";
+import { color } from "../../../../lib/colors";
 import { IconCheck } from "@tabler/icons-react";
 import {
   Avatar,
@@ -13,10 +13,12 @@ import {
   Paper,
   TextInput,
 } from "@mantine/core";
-import SelectGender from "../../../global/components/gender-select";
-import SelectRole from "../../../global/components/role-select";
-import SingleImageUpload from "../../../global/components/single-image-upload";
+import SelectGender from "../../../../global/components/gender-select";
+import SelectRole from "../../../../global/components/role-select";
+import SingleImageUpload from "../../../../global/components/single-image-upload";
 import { DateInput, DateValue } from "@mantine/dates";
+import AuthContext from "../../../../context/auth-context";
+import DotLoader from "../../../../global/components/dot-loader";
 
 type StaffRegistrationFormProps = {
   closeStaffRegModalForm: () => void;
@@ -25,8 +27,14 @@ type StaffRegistrationFormProps = {
 const StaffRegistrationForm: React.FC<StaffRegistrationFormProps> = ({
   closeStaffRegModalForm,
 }) => {
-  const { loadingNotification, updateNotification } =
-    useShowAndUpdateNotification();
+  const authContext = useContext(AuthContext);
+
+  if (!authContext) {
+    throw new Error("AuthContext is not defined");
+  }
+
+  const { loading, setLoading } = authContext;
+  const { showNotification } = useShowAndUpdateNotification();
 
   const form = useForm<{
     firstname: string;
@@ -72,29 +80,24 @@ const StaffRegistrationForm: React.FC<StaffRegistrationFormProps> = ({
   });
 
   const handleOnSubmit = () => {
-    loadingNotification({
-      id: "register",
-      message: "Please wait, we are saving your details.",
-      color: color.blue_500,
-      title: "Staff Registration",
-    });
-
-    updateNotification({
-      id: "register",
-      message: "Successfully registered",
-      color: color.green,
-      title: "Staff Registration",
-      delay: 5000,
-      icon: <IconCheck size="1rem" />,
-    });
+    setLoading(true);
 
     setTimeout(() => {
+      setLoading(false);
+      showNotification({
+        id: "register",
+        message: "Successfully registered",
+        color: color.green,
+        title: "Staff Registration",
+        icon: <IconCheck size="1rem" />,
+      });
       closeStaffRegModalForm();
-    }, 1000);
+    }, 3000);
   };
 
   return (
     <Paper p={"md"} radius={"md"} w={"100%"}>
+      {loading && <DotLoader />}
       <form onSubmit={form.onSubmit(handleOnSubmit)}>
         <Grid>
           <Grid.Col span={{ base: 12, md: 6 }}>

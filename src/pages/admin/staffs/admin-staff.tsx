@@ -12,7 +12,7 @@ import { color } from "../../../lib/colors";
 import { IconPlus } from "@tabler/icons-react";
 import StaffTable from "./components/staff-table";
 import { useDisclosure } from "@mantine/hooks";
-import StaffRegistrationForm from "./staff-registration-form";
+import StaffRegistrationForm from "./components/staff-registration-form";
 
 const AdminStaff: React.FC = () => {
   const [

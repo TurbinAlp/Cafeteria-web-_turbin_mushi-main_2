@@ -9,13 +9,15 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { DateInput, DateValue } from "@mantine/dates";
-import React from "react";
+import React, { useContext } from "react";
 import SingleImageUpload from "./single-image-upload";
 import { GENDER } from "../../lib/enum";
 import { color } from "../../lib/colors";
 import useShowAndUpdateNotification from "./show-and-update-notification";
 import { IconCheck } from "@tabler/icons-react";
 import SelectGender from "./gender-select";
+import AuthContext from "../../context/auth-context";
+import DotLoader from "./dot-loader";
 
 type CustomerRegistrationProps = {
   closeRegisterCustomer: () => void;
@@ -24,8 +26,14 @@ type CustomerRegistrationProps = {
 const CustomerRegistration: React.FC<CustomerRegistrationProps> = ({
   closeRegisterCustomer,
 }) => {
-  const { loadingNotification, updateNotification } =
-    useShowAndUpdateNotification();
+  const authContext = useContext(AuthContext);
+
+  if (!authContext) {
+    throw new Error("AuthContext is not defined");
+  }
+
+  const { loading, setLoading } = authContext;
+  const { showNotification } = useShowAndUpdateNotification();
 
   const form = useForm<{
     name: string;
@@ -70,29 +78,24 @@ const CustomerRegistration: React.FC<CustomerRegistrationProps> = ({
   });
 
   const handleOnSubmit = () => {
-    loadingNotification({
-      id: "register",
-      message: "Please wait, we are saving your details.",
-      color: color.blue_500,
-      title: "Registration",
-    });
-
-    updateNotification({
-      id: "register",
-      message: "Successfully registered",
-      color: color.green,
-      title: "Registration",
-      delay: 5000,
-      icon: <IconCheck size="1rem" />,
-    });
+    setLoading(true);
 
     setTimeout(() => {
+      setLoading(false);
+      showNotification({
+        id: "register",
+        message: "Successfully registered",
+        color: color.green,
+        title: "Registration",
+        icon: <IconCheck size="1rem" />,
+      });
       closeRegisterCustomer();
-    }, 1000);
+    }, 3000);
   };
 
   return (
     <Paper p={"md"} shadow="xs" radius={"md"} w={"100%"}>
+      {loading && <DotLoader />}
       <form onSubmit={form.onSubmit(handleOnSubmit)}>
         <Grid>
           <Grid.Col span={{ base: 12 }}>
