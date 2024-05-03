@@ -1,201 +1,155 @@
-import React, { useState } from "react";
-import ugali_maharage from "../../../../assets/Ugali maharage.jpeg";
-import chipsi_yai from "../../../../assets/chipsi yai.jpg";
-import kuku_kukaanga from "../../../../assets/kuku wa kukaanga.jpg";
-import makange_kuku from "../../../../assets/makange kuku.jpg";
-import kuku_rosti from "../../../../assets/kuku roste.jpg";
-import ugali_nyama from "../../../../assets/Ugali nyama.jpg";
-import wali_maharage from "../../../../assets/wali maharage.jpg";
-import wali_makange_nyama from "../../../../assets/wali makange nyama.jpeg";
-import wali_samaki from "../../../../assets/wali samaki.jpeg";
-import useRandomNumberGenerator from "../../../../global/function/random-number-generator";
-import {
-  ActionIcon,
-  Avatar,
-  Badge,
-  Divider,
-  Group,
-  Menu,
-  Paper,
-  Space,
-  Table,
-  Title,
+import React, { useState, useEffect } from "react";
+import { ActionIcon, Avatar, Badge, Divider, Group, Menu, Paper, Space, Table, Title,
 } from "@mantine/core";
 import { IconDots, IconEdit, IconTrash } from "@tabler/icons-react";
 import { color } from "../../../../lib/colors";
-import { DAY_ROUTINE, STATUS } from "../../../../lib/enum";
-import SelectDayRoutine from "../../../../global/components/day-routine-select";
+import {  STATUS } from "../../../../lib/enum";
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, get, } from "firebase/database";
 
-type menuType = {
-  imageUrl: string;
-  name: string;
-  price: string;
-  status: string;
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAndKeLngrxV4Hn3RE3YnLJ5-_DvtMfGos",
+  authDomain: "dtcs-app.firebaseapp.com",
+  databaseURL: "https://dtcs-app-default-rtdb.firebaseio.com",
+  projectId: "dtcs-app",
+  storageBucket: "dtcs-app.appspot.com",
+  messagingSenderId: "638755640647",
+  appId: "1:638755640647:web:33289ec257f94bebb76862",
+  measurementId: "G-LHHDQLFBDL"
 };
 
+// Initialize Firebase
+const firebase = initializeApp(firebaseConfig);
+const database = getDatabase(firebase);
+
 const MenuTable: React.FC = () => {
-  const { menuPriceGenerator } = useRandomNumberGenerator();
-  const [dayRoutine, setDayRoutine] = useState<DAY_ROUTINE>(
-    DAY_ROUTINE.MORNING
-  );
+  // Define the state for menus and its setter function
+  const [menus, setMenus] = useState<any[]>([]);
+  const [selectedMenu, setSelectedMenu] = useState<any>(null);
+  const [filteredItems, setFilteredItems] = useState<any[]>([]);
 
-  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+  interface MenuItem {
+  name: string;
+  items: any[]; // Adjust this type according to the structure of your 'items'
+}
 
-  const handleMouseEnter = (index: number) => {
-    setHoveredItem(index);
+useEffect(() => {
+  // Function to fetch data from Firebase
+  const fetchMenus = async () => {
+    const menusRef = ref(database, 'MENUS');
+    try {
+      const snapshot = await get(menusRef);
+      if (snapshot.exists()) {
+        const menusData = snapshot.val();
+        const menusArray = Object.keys(menusData).map((key) => ({
+          name: key,
+          items: Object.values(menusData[key]),
+        }));
+        setMenus(menusArray);
+      }
+    } catch (error) {
+      console.error("Error fetching menus:", error);
+    }
   };
 
-  const handleMouseLeave = () => {
-    setHoveredItem(null);
-  };
+  fetchMenus(); // Call the fetchMenus function when component mounts
+}, []);
 
-  const menu: menuType[] = [
-    {
-      imageUrl: ugali_maharage,
-      name: "Ugali Maharage",
-      price: menuPriceGenerator(),
-      status: STATUS.AVAILABLE,
-    },
-    {
-      imageUrl: chipsi_yai,
-      name: "Chipsi Yai",
-      price: menuPriceGenerator(),
-      status: STATUS.NOT_AVAILABLE,
-    },
-    {
-      imageUrl: kuku_kukaanga,
-      name: "Kuku wa Kukaanga",
-      price: menuPriceGenerator(),
-      status: STATUS.AVAILABLE,
-    },
-    {
-      imageUrl: makange_kuku,
-      name: "Makange Kuku",
-      price: menuPriceGenerator(),
-      status: STATUS.AVAILABLE,
-    },
-    {
-      imageUrl: kuku_rosti,
-      name: "Kuku Rosti",
-      price: menuPriceGenerator(),
-      status: STATUS.NOT_AVAILABLE,
-    },
-    {
-      imageUrl: ugali_nyama,
-      name: "Ugali Nyama",
-      price: menuPriceGenerator(),
-      status: STATUS.AVAILABLE,
-    },
-    {
-      imageUrl: wali_maharage,
-      name: "Wali Maharage",
-      price: menuPriceGenerator(),
-      status: STATUS.NOT_AVAILABLE,
-    },
-    {
-      imageUrl: wali_makange_nyama,
-      name: "Wali Makange Nyama",
-      price: menuPriceGenerator(),
-      status: STATUS.AVAILABLE,
-    },
-    {
-      imageUrl: wali_samaki,
-      name: "Wali Samaki",
-      price: menuPriceGenerator(),
-      status: STATUS.AVAILABLE,
-    },
-  ];
+useEffect(() => {
+  // Filter the items based on the selected menu's sub-collection
+  if (selectedMenu) {
+    const selectedMenuItems = menus.find((m) => m.name === selectedMenu.name)?.items || [];
+    setFilteredItems(selectedMenuItems);
+  }
+}, [selectedMenu, menus]);
 
-  const row = menu.map((m, index) => (
-    <Table.Tr
-      key={index}
-      onMouseEnter={() => handleMouseEnter(index)}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        backgroundColor:
-          hoveredItem === index ? color.semi_transparent_blue : color.white,
-      }}
-    >
-      <Table.Td>
-        <Avatar src={m.imageUrl} radius="md" size={"lg"} />
-      </Table.Td>
-      <Table.Td>{m.name}</Table.Td>
-      <Table.Td>{m.price} Tshs</Table.Td>
-      <Table.Td>
-        {m.status === STATUS.AVAILABLE ? (
-          <Badge bg={`${color.green}`} w={120} py={"xs"}>
-            {m.status}
-          </Badge>
-        ) : (
-          <Badge bg={`${color.red}`} w={120} py={"xs"}>
-            {m.status}
-          </Badge>
-        )}
-      </Table.Td>
-      <Table.Td>
-        <Group>
-          <ActionIcon variant="light" size={"lg"}>
-            <IconEdit style={{ width: "70%", height: "70%" }} stroke={1.5} />
-          </ActionIcon>
+useEffect(() => {
+  // Set the default selected menu to "Breakfast"
+  if (menus.length > 0) {
+    const defaultMenu = menus.find((m) => m.name === "Breakfast");
+    if (defaultMenu) {
+      setSelectedMenu(defaultMenu);
+    }
+  }
+}, [menus]);
 
-          <ActionIcon variant="light" c={`${color.red}`} size={"lg"}>
-            <IconTrash style={{ width: "70%", height: "70%" }} stroke={1.5} />
-          </ActionIcon>
-        </Group>
-      </Table.Td>
-    </Table.Tr>
-  ));
+const handleMenuSelect = (menu: MenuItem) => {
+  setSelectedMenu(menu);
+  const selectedMenuItems = menus.find((m) => m.name === menu.name)?.items || [];
+  setFilteredItems(selectedMenuItems);
+};
 
-  return (
-    <Paper p={"md"} shadow="md" w={"100%"} radius={"md"}>
-      <Group justify="space-between">
-        <Group>
-          <Title order={2} c={`${color.blue_950}`}>
-            Menu
-          </Title>
-          <Divider orientation="vertical" size={"lg"} />
-          <Title order={3} c={`${color.dimmed}`}>
-            {dayRoutine}
-          </Title>
-        </Group>
-        <Menu position="bottom" withArrow width={200} shadow="md">
-          <Menu.Target>
-            <IconDots />
-          </Menu.Target>
-
-          <Menu.Dropdown>
-            <SelectDayRoutine
-              placeholder=""
-              error={null}
-              variant="filled"
-              label="Filter"
-              value={dayRoutine}
-              onChange={setDayRoutine}
-            />
-          </Menu.Dropdown>
-        </Menu>
+return (
+  <Paper p={"md"} shadow="md" w={"100%"} radius={"md"}>
+    <Group justify="space-between">
+      <Group>
+        <Title order={2} c={`${color.blue_950}`}>
+          Menu
+        </Title>
+        <Divider orientation="vertical" size={"lg"} />
+        <Title order={3} c={`${color.dimmed}`}>
+          {/* Display the selected status mode */}
+          {/* For example: {statusMode} */}
+          {selectedMenu ? selectedMenu.name : ''}
+        </Title>
       </Group>
+      <Menu position="bottom" withArrow width={200} shadow="md">
+        <Menu.Target>
+          <IconDots />
+        </Menu.Target>
+        <Menu.Dropdown>
+        {/* Map through the menus state to render dropdown items */}
+          {menus.map((menu, index) => (
+            <Menu.Item key={index} onClick={() => handleMenuSelect(menu)}>
+              {menu.name}
+            </Menu.Item>
+          ))}
+        </Menu.Dropdown>
 
-      <Space h={"md"} />
+      </Menu>
+    </Group>
 
-      {/* TABLE */}
+    <Space h={"md"} />
 
-      <Table.ScrollContainer minWidth={700} type="native" mah={380}>
-        <Table horizontalSpacing="md" verticalSpacing="xs" layout="fixed">
-          <Table.Tbody>
+    <Table.ScrollContainer minWidth={700} type="native" mah={380}>
+      <Table horizontalSpacing="md" verticalSpacing="xs" layout="fixed">
+      <Table.Tbody>
+        {filteredItems.map((item, index) => (
+          <React.Fragment key={index}>
             <Table.Tr>
-              <Table.Th>Preview</Table.Th>
-              <Table.Th>Food Name</Table.Th>
-              <Table.Th>Price</Table.Th>
-              <Table.Th>Status</Table.Th>
-              <Table.Th>Action</Table.Th>
+              <Table.Td>
+                <Avatar src={item.menuImage} radius="md" size={"lg"} />
+              </Table.Td>
+              <Table.Td>{item.foodName}</Table.Td>
+              <Table.Td>{item.price} Tshs</Table.Td>
+              <Table.Td>
+                <Badge bg={`${item.statusMode === STATUS.AVAILABLE ? color.green : color.red}`} w={120} py={"xs"}>
+                  {item.statusMode}
+                </Badge>
+              </Table.Td>
+              <Table.Td>
+                <Group>
+                  <ActionIcon variant="light" size={"lg"}>
+                    <IconEdit style={{ width: "70%", height: "70%" }} stroke={1.5} />
+                  </ActionIcon>
+                  <ActionIcon variant="light" c={`${color.red}`} size={"lg"}>
+                    <IconTrash style={{ width: "70%", height: "70%" }} stroke={1.5} />
+                  </ActionIcon>
+                </Group>
+              </Table.Td>
             </Table.Tr>
-          </Table.Tbody>
-          <Table.Tbody>{row}</Table.Tbody>
-        </Table>
-      </Table.ScrollContainer>
-    </Paper>
-  );
+            {/* Add a divider after each menu item */}
+            <Table.Tr>
+              <Table.Td colSpan={5}><Divider size="sm" /></Table.Td>
+            </Table.Tr>
+          </React.Fragment>
+        ))}
+      </Table.Tbody>
+      </Table>
+    </Table.ScrollContainer>
+  </Paper>
+);
 };
 
 export default MenuTable;

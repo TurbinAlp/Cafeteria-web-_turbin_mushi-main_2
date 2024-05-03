@@ -31,7 +31,7 @@ import React, { useState } from "react";
 import classes from "../../../../global/css/TableSort.module.css";
 import { STAFF_DATA, STAFF_DATA_TYPE } from "../staff-data";
 import { useDisclosure } from "@mantine/hooks";
-import { STATUS } from "../../../../lib/enum";
+import { STAFF_STATUS } from "../../../../lib/enum";
 import { color } from "../../../../lib/colors";
 import StaffInformation from "./staff-information";
 
@@ -140,7 +140,7 @@ const StaffTable: React.FC = () => {
 
   const rows = sortedData.map((row: STAFF_DATA_TYPE, index) => (
     <Table.Tr
-      key={row.name}
+      key={row.username}
       onMouseEnter={() => handleMouseEnter(index)}
       onMouseLeave={handleMouseLeave}
       style={{
@@ -155,7 +155,7 @@ const StaffTable: React.FC = () => {
 
             <div style={{ flex: 1 }}>
               <Text size="sm" fw={500}>
-                {row.name}
+                {row.username}
               </Text>
             </div>
           </Flex>
@@ -173,7 +173,7 @@ const StaffTable: React.FC = () => {
       </Table.Td>
       <Table.Td>{row.role}</Table.Td>
       <Table.Td>
-        {row.status === STATUS.ACTIVE ? (
+        {row.status === STAFF_STATUS.ACTIVE ? (
           <Badge bg={`${color.green}`} w={120} py={"xs"}>
             {row.status}
           </Badge>
@@ -189,7 +189,7 @@ const StaffTable: React.FC = () => {
             variant="light"
             size={"lg"}
             onClick={() => {
-              setSelectedStaff({ email: row.email, name: row.name });
+              setSelectedStaff({ email: row.email, name: row.username });
               open();
             }}
           >
@@ -210,9 +210,9 @@ const StaffTable: React.FC = () => {
               <Menu.Item>
                 <Group>
                   <IconStatusChange />
-                  {row.status === STATUS.ACTIVE
-                    ? STATUS.INACTIVE
-                    : STATUS.ACTIVE}
+                  {row.status === STAFF_STATUS.ACTIVE
+                    ? STAFF_STATUS.INACTIVE
+                    : STAFF_STATUS.ACTIVE}
                 </Group>
               </Menu.Item>
               <Menu.Item>
@@ -273,9 +273,9 @@ const StaffTable: React.FC = () => {
             <Table.Tbody>
               <Table.Tr bg={`${color.blue_100}`}>
                 <Th
-                  sorted={sortBy === "name"}
+                  sorted={sortBy === "username"}
                   reversed={reverseSortDirection}
-                  onSort={() => setSorting("name")}
+                  onSort={() => setSorting("username")}
                 >
                   Name
                 </Th>

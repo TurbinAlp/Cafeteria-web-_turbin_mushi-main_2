@@ -1,9 +1,12 @@
+import { initializeApp } from "firebase/app";
+import { getStorage, ref as storageRefe, uploadString, getDownloadURL } from "firebase/storage";
+import { getDatabase, ref, push, DatabaseReference } from "firebase/database"; // Add this import for Realtime Database
 import { useForm } from "@mantine/form";
 import React, { useContext } from "react";
 import useShowAndUpdateNotification from "../../../../global/components/show-and-update-notification";
 import { IconCheck } from "@tabler/icons-react";
 import { color } from "../../../../lib/colors";
-import { CATEGORY, DAY_ROUTINE } from "../../../../lib/enum";
+import { CATEGORY, STATUS } from "../../../../lib/enum";
 import {
   Avatar,
   Button,
@@ -18,6 +21,24 @@ import SelectCategory from "../../../../global/components/category-select";
 import SingleImageUpload from "../../../../global/components/single-image-upload";
 import AuthContext from "../../../../context/auth-context";
 import DotLoader from "../../../../global/components/dot-loader";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAndKeLngrxV4Hn3RE3YnLJ5-_DvtMfGos",
+  authDomain: "dtcs-app.firebaseapp.com",
+  databaseURL: "https://dtcs-app-default-rtdb.firebaseio.com",
+  projectId: "dtcs-app",
+  storageBucket: "dtcs-app.appspot.com",
+  messagingSenderId: "638755640647",
+  appId: "1:638755640647:web:33289ec257f94bebb76862",
+  measurementId: "G-LHHDQLFBDL"
+};
+
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+const storage = getStorage(app);
 
 type CustomerRegistrationProps = {
   closeNewMenuModalForm: () => void;
@@ -39,14 +60,14 @@ const NewMenu: React.FC<CustomerRegistrationProps> = ({
     foodName: string;
     foodCategory: CATEGORY | null;
     price: string;
-    availableHours: DAY_ROUTINE | null;
+    statusMode: STATUS | null;
     menuImage: File | null;
   }>({
     initialValues: {
       foodName: "",
       foodCategory: null,
       price: "",
-      availableHours: null,
+      statusMode: null,
       menuImage: null,
     },
     validate: {
@@ -54,28 +75,99 @@ const NewMenu: React.FC<CustomerRegistrationProps> = ({
 
       foodCategory: (val) => (val === null ? "Please select a category" : null),
       price: (val) => (val.length === 0 ? "Food price required" : null),
-      availableHours: (val) =>
-        val === null ? "Select food available hours" : null,
+      statusMode: (val) =>
+        val === null ? "Select food status" : null,
 
       menuImage: (val) => (!val ? "Please upload food image" : null),
     },
   });
 
+ 
   const handleOnSubmit = () => {
     setLoading(true);
 
-    setTimeout(() => {
-      setLoading(false);
-      showNotification({
-        id: "add",
-        message: "Successfully added",
-        color: color.green,
-        title: "Menu",
-        icon: <IconCheck size="1rem" />,
-      });
-      closeNewMenuModalForm();
-    }, 3000);
-  };
+    const file = form.values.menuImage;
+
+    if (!file) {
+        setLoading(false);
+        console.error('No image selected');
+        return;
+    }
+
+    const imageName = file.name;
+
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+        if (event.target && event.target.result) {
+            const imageDataUrl = event.target.result as string;
+
+            // Upload image data URL to Firebase Storage
+            const storageRef = storageRefe(storage, 'menu_images/' + imageName);
+            uploadString(storageRef, imageDataUrl, 'data_url')
+                .then(() => {
+                    // Get the download URL of the uploaded image
+                    getDownloadURL(storageRef)
+                        .then((url) => {
+                            const newData = {
+                                foodName: form.values.foodName,
+                                foodCategory: form.values.foodCategory,
+                                price: form.values.price,
+                                statusMode: form.values.statusMode,
+                                menuImage: url, // Store the URL of the uploaded image
+                            };
+
+                            // Push the new data to the appropriate subcollection in the database
+                            let subcollectionRef: DatabaseReference | null = null;
+
+                            const foodCategory = form.values.foodCategory;
+                            if (foodCategory !== null) {
+                                if (foodCategory === CATEGORY.BREAKFAST) {
+                                    subcollectionRef = ref(database, 'MENUS/Breakfast');
+                                } else if (foodCategory === CATEGORY.LUNCH) {
+                                    subcollectionRef = ref(database, 'MENUS/Lunch');
+                                } else if (foodCategory === CATEGORY.DINNER) {
+                                    subcollectionRef = ref(database, 'MENUS/Dinner');
+                                }
+                            }
+                            
+                            if (subcollectionRef) {
+                                push(subcollectionRef, newData)
+                                    .then(() => {
+                                        setLoading(false);
+                                        showNotification({
+                                            id: 'add',
+                                            message: 'Successfully added',
+                                            color: color.green,
+                                            title: 'Menu',
+                                            icon: <IconCheck size="1rem" />,
+                                        });
+                                        closeNewMenuModalForm();
+                                    })
+                                    .catch((error) => {
+                                        console.error('Error adding new menu: ', error);
+                                    });
+                            } else {
+                                console.error('Invalid food category');
+                            }
+                        })
+                        .catch((error) => {
+                            console.error('Error getting download URL: ', error);
+                        });
+                })
+                .catch((error) => {
+                    console.error('Error uploading image: ', error);
+                });
+        } else {
+            setLoading(false);
+            console.error('Failed to load image');
+        }
+    };
+
+    reader.readAsDataURL(file);
+};
+
+  
   return (
     <Paper p={"md"} radius={"md"} w={"100%"}>
       {loading && <DotLoader />}
@@ -96,12 +188,12 @@ const NewMenu: React.FC<CustomerRegistrationProps> = ({
 
           <Grid.Col span={{ base: 12, md: 6 }}>
             <SelectDayRoutine
-              placeholder="Available hours"
-              error={form.errors.availableHours}
+              placeholder="Status Mode"
+              error={form.errors.statusMode}
               variant="default"
-              label="Available Hours"
-              value={form.values.availableHours}
-              onChange={(value) => form.setFieldValue("availableHours", value)}
+              label="Status Mode"
+              value={form.values.statusMode}
+              onChange={(value) => form.setFieldValue("statusMode", value)}
             />
           </Grid.Col>
 

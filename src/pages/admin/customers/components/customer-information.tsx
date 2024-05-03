@@ -24,7 +24,7 @@ const CustomerInformation: React.FC<CustomerInformationProps> = ({ data }) => {
 
   useEffect(() => {
     const customer = CUSTOMER_DATA.find(
-      (customer) => customer.email === data.email
+      (customer) => customer.username === data.email
     );
     if (customer) {
       setSelectedStaff(customer);
@@ -45,7 +45,7 @@ const CustomerInformation: React.FC<CustomerInformationProps> = ({ data }) => {
             justify={"center"}
             align={"center"}
           >
-            <Avatar src={selectedStaff?.passport} radius={"xl"} size={200} />
+            <Avatar src={selectedStaff?.profilePic} radius={"xl"} size={200} />
             <div
               style={{
                 alignItems: "center",
@@ -54,7 +54,7 @@ const CustomerInformation: React.FC<CustomerInformationProps> = ({ data }) => {
               }}
             >
               <Title order={2} c={`${color.blue_950}`}>
-                {selectedStaff?.name}
+                {selectedStaff?.Fullname}
               </Title>
               <Text
                 c={`${color.dimmed}`}
@@ -64,7 +64,38 @@ const CustomerInformation: React.FC<CustomerInformationProps> = ({ data }) => {
                   lineHeight: 1.2,
                 }}
               >
-                {selectedStaff?.registrationNumber}
+                {selectedStaff?.Account_Number}
+              </Text>
+            </div>
+          </Flex>
+        </Paper>
+      
+        <Paper shadow="xs" radius={"md"} p={"md"} w={{ base: "100%" }}>
+          <Flex
+            direction={"column"}
+            gap={"md"}
+            justify={"center"}
+            align={"center"}
+          >
+            <div
+              style={{
+                alignItems: "center",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Title order={2} c={`${color.blue_950}`}>
+                {selectedStaff?.Amount}
+              </Title>
+              <Text
+                c={`${color.dimmed}`}
+                style={{
+                  whiteSpace: "pre-line",
+                  textAlign: "center",
+                  lineHeight: 1.2,
+                }}
+              >
+                {selectedStaff?.Amount}
               </Text>
             </div>
           </Flex>
@@ -93,7 +124,7 @@ const CustomerInformation: React.FC<CustomerInformationProps> = ({ data }) => {
                   lineHeight: 1.2,
                 }}
               >
-                Showing {selectedStaff?.name}'s details{" "}
+                Showing {selectedStaff?.Fullname}'s details{" "}
               </Title>
 
               <Space h={"xs"} />
@@ -102,20 +133,20 @@ const CustomerInformation: React.FC<CustomerInformationProps> = ({ data }) => {
                 <Flex justify="start" align={"center"} direction={"row"}>
                   <Text w={"35%"}>Full Name</Text>
                   <Text w={"65%"} c={`${color.dimmed}`}>
-                    {selectedStaff?.name}
+                    {selectedStaff?.Fullname}
                   </Text>
                 </Flex>
                 <Flex justify="start" align={"center"} direction={"row"}>
                   <Text w={"35%"}>Reg Number</Text>
                   <Text w={"65%"} c={`${color.dimmed}`}>
-                    {selectedStaff?.registrationNumber}
+                    {selectedStaff?.Account_Number}
                   </Text>
                 </Flex>
 
                 <Flex justify="start" align={"center"} direction={"row"}>
                   <Text w={"35%"}>Gender</Text>
                   <Text w={"65%"} c={`${color.dimmed}`}>
-                    {selectedStaff?.gender}
+                    {selectedStaff?.Gender}
                   </Text>
                 </Flex>
 
@@ -129,20 +160,20 @@ const CustomerInformation: React.FC<CustomerInformationProps> = ({ data }) => {
                   <Text w={"35%"}>Mobile</Text>
                   <Anchor
                     w={"65%"}
-                    href={`tell:${selectedStaff?.phoneNumber}`}
+                    href={`tell:${selectedStaff?.PhoneNumber}`}
                     lineClamp={1}
                   >
-                    {selectedStaff?.phoneNumber}
+                    {selectedStaff?.PhoneNumber}
                   </Anchor>
                 </Flex>
                 <Flex justify="start" align={"center"} direction={"row"}>
                   <Text w={"35%"}>Email</Text>
                   <Anchor
                     w={"65%"}
-                    href={`mailto:${selectedStaff?.email}`}
+                    href={`mailto:${selectedStaff?.username}`}
                     lineClamp={1}
                   >
-                    {selectedStaff?.email}
+                    {selectedStaff?.username}
                   </Anchor>
                 </Flex>
               </div>

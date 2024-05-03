@@ -30,7 +30,7 @@ import {
 } from "@tabler/icons-react";
 import { CUSTOMER_DATA, CUSTOMER_TYPE } from "./data";
 import { useDisclosure } from "@mantine/hooks";
-import CustomerInformation from "./customer-information";
+// import CustomerInformation from "./customer-informatin";
 
 interface ThProps {
   children: React.ReactNode;
@@ -138,7 +138,7 @@ const CustomerTable: React.FC = () => {
 
   const rows = sortedData.map((row: CUSTOMER_TYPE, index) => (
     <Table.Tr
-      key={row.name}
+      key={row.Fullname}
       onMouseEnter={() => handleMouseEnter(index)}
       onMouseLeave={handleMouseLeave}
       style={{
@@ -149,28 +149,29 @@ const CustomerTable: React.FC = () => {
       <Table.Td>
         <UnstyledButton>
           <Flex wrap="wrap" gap={"sm"} align="center" direction={"row"}>
-            <Avatar src={row.passport} radius="xl" />
+            <Avatar src={row.profilePic} radius="xl" />
 
             <div style={{ flex: 1 }}>
               <Text size="sm" fw={500}>
-                {row.name}
+                {row.Fullname}
               </Text>
             </div>
           </Flex>
         </UnstyledButton>
       </Table.Td>
       <Table.Td>
-        <Anchor fz="sm" href={`mailto:${row.email}`} lineClamp={1}>
-          {row.email}
+        <Anchor fz="sm" href={`mailto:${row.username}`} lineClamp={1}>
+          {row.username}
         </Anchor>
       </Table.Td>
       <Table.Td>
-        <Anchor fz="sm" href={`tell:${row.phoneNumber}`}>
-          {row.phoneNumber}
+        <Anchor fz="sm" href={`tell:${row.PhoneNumber}`}>
+          {row.PhoneNumber}
         </Anchor>
       </Table.Td>
-      <Table.Td>{row.gender}</Table.Td>
-      <Table.Td>{row.registrationNumber}</Table.Td>
+      <Table.Td>{row.Gender}</Table.Td>
+      <Table.Td>{row.Account_Number}</Table.Td>
+      <Table.Td>{row.Amount}</Table.Td>
       <Table.Td>{row.cardNumber}</Table.Td>
 
       <Table.Td>
@@ -179,7 +180,7 @@ const CustomerTable: React.FC = () => {
             variant="light"
             size={"lg"}
             onClick={() => {
-              setSelectedStaff({ email: row.email, name: row.name });
+              setSelectedStaff({ email: row.username, name: row.Fullname });
               open();
             }}
           >
@@ -232,7 +233,7 @@ const CustomerTable: React.FC = () => {
       >
         <Divider size={"sm"} />
 
-        <CustomerInformation data={{ email: selectedStaff?.email }} />
+        {/* <CustomerInformation data={{ email: selectedStaff?.email }} /> */}
       </Modal>
 
       <Paper p={30} radius="md" shadow="sm">
@@ -256,40 +257,48 @@ const CustomerTable: React.FC = () => {
             <Table.Tbody>
               <Table.Tr bg={`${color.blue_100}`}>
                 <Th
-                  sorted={sortBy === "name"}
+                  sorted={sortBy === "Fullname"}
                   reversed={reverseSortDirection}
-                  onSort={() => setSorting("name")}
+                  onSort={() => setSorting("Fullname")}
                 >
                   Name
                 </Th>
                 <Th
-                  sorted={sortBy === "email"}
+                  sorted={sortBy === "username"}
                   reversed={reverseSortDirection}
-                  onSort={() => setSorting("email")}
+                  onSort={() => setSorting("username")}
                 >
                   Email
                 </Th>
                 <Th
-                  sorted={sortBy === "phoneNumber"}
+                  sorted={sortBy === "PhoneNumber"}
                   reversed={reverseSortDirection}
-                  onSort={() => setSorting("phoneNumber")}
+                  onSort={() => setSorting("PhoneNumber")}
                 >
                   Phone Number
                 </Th>
                 <Th
-                  sorted={sortBy === "gender"}
+                  sorted={sortBy === "Gender"}
                   reversed={reverseSortDirection}
-                  onSort={() => setSorting("gender")}
+                  onSort={() => setSorting("Gender")}
                 >
                   Gender
                 </Th>
 
                 <Th
-                  sorted={sortBy === "registrationNumber"}
+                  sorted={sortBy === "Account_Number"}
                   reversed={reverseSortDirection}
-                  onSort={() => setSorting("registrationNumber")}
+                  onSort={() => setSorting("Account_Number")}
                 >
-                  Registrstion Number
+                  Account Number
+                </Th>
+
+                <Th
+                  sorted={sortBy === "Amount"}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting("Amount")}
+                >
+                  Amount
                 </Th>
                 <Th
                   sorted={sortBy === "cardNumber"}

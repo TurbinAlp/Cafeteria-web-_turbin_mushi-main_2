@@ -1,158 +1,88 @@
-import { ROLE, STATUS } from "../../../lib/enum";
+import { ROLE, STAFF_STATUS } from "../../../lib/enum";
 
-export type STAFF_DATA_TYPE = {
-  name: string;
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, get, } from "firebase/database";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAndKeLngrxV4Hn3RE3YnLJ5-_DvtMfGos",
+  authDomain: "dtcs-app.firebaseapp.com",
+  databaseURL: "https://dtcs-app-default-rtdb.firebaseio.com",
+  projectId: "dtcs-app",
+  storageBucket: "dtcs-app.appspot.com",
+  messagingSenderId: "638755640647",
+  appId: "1:638755640647:web:33289ec257f94bebb76862",
+  measurementId: "G-LHHDQLFBDL"
+};
+
+// Initialize Firebase
+const firebase = initializeApp(firebaseConfig);
+const database = getDatabase(firebase);
+
+
+// Define the type for staff data from Firebase
+export interface FirebaseStaffData {
+  username: string;
   email: string;
   mobile: string;
   role: ROLE;
-  status: STATUS;
+  status: STAFF_STATUS;
   passport: string;
   course: string;
   academicYear: string;
   gender: string;
   address: string;
-  birthDate: string; // Assuming birth date is represented as a string
-};
+  birthDate: string;
+}
 
-export const STAFF_DATA: STAFF_DATA_TYPE[] = [
-  {
-    name: "Fatuma Yusuf",
-    email: "fatuma.yusuf@example.com",
-    mobile: "+255 754 123 456",
-    role: ROLE.CASHIER,
-    status: STATUS.ACTIVE,
-    passport:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png",
-    course: "Accounting",
-    academicYear: "2022/2023",
-    gender: "Female",
-    address: "Dar es Salaam, Tanzania",
-    birthDate: "1990-05-15",
-  },
-  {
-    name: "Rashid Salum",
-    email: "rashid.salum@example.com",
-    mobile: "+255 787 234 567",
-    role: ROLE.CASHIER,
-    status: STATUS.ACTIVE,
-    passport:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png",
-    course: "Marketing",
-    academicYear: "2021/2022",
-    gender: "Male",
-    address: "Arusha, Tanzania",
-    birthDate: "1987-09-22",
-  },
-  {
-    name: "Aisha Said",
-    email: "aisha.said@example.com",
-    mobile: "+255 716 345 678",
-    role: ROLE.CASHIER,
-    status: STATUS.INACTIVE,
-    passport:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-3.png",
-    course: "Computer Science",
-    academicYear: "2023/2024",
-    gender: "Female",
-    address: "Dodoma, Tanzania",
-    birthDate: "1995-03-10",
-  },
-  {
-    name: "Hamisi Juma",
-    email: "hamisi.juma@example.com",
-    mobile: "+255 765 456 789",
-    role: ROLE.CASHIER,
-    status: STATUS.INACTIVE,
-    passport:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-9.png",
-    course: "Engineering",
-    academicYear: "2022/2023",
-    gender: "Male",
-    address: "Zanzibar, Tanzania",
-    birthDate: "1988-11-30",
-  },
-  {
-    name: "Zainab Ali",
-    email: "zainab.ali@example.com",
-    mobile: "+255 754 567 890",
-    role: ROLE.CASHIER,
-    status: STATUS.ACTIVE,
-    passport:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-10.png",
-    course: "Medicine",
-    academicYear: "2021/2022",
-    gender: "Female",
-    address: "Mwanza, Tanzania",
-    birthDate: "1992-07-05",
-  },
-  {
-    name: "Ahmed Mwinyi",
-    email: "ahmed.mwinyi@example.com",
-    mobile: "+255 783 678 901",
-    role: ROLE.CASHIER,
-    status: STATUS.INACTIVE,
-    passport:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png",
-    course: "Law",
-    academicYear: "2023/2024",
-    gender: "Male",
-    address: "Mbeya, Tanzania",
-    birthDate: "1993-12-18",
-  },
-  {
-    name: "Neema Hassan",
-    email: "neema.hassan@example.com",
-    mobile: "+255 712 789 012",
-    role: ROLE.CASHIER,
-    status: STATUS.ACTIVE,
-    passport:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png",
-    course: "Finance",
-    academicYear: "2022/2023",
-    gender: "Female",
-    address: "Kilimanjaro, Tanzania",
-    birthDate: "1989-08-25",
-  },
-  {
-    name: "Juma Ali",
-    email: "juma.ali@example.com",
-    mobile: "+255 787 890 123",
-    role: ROLE.CASHIER,
-    status: STATUS.ACTIVE,
-    passport:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-3.png",
-    course: "Education",
-    academicYear: "2021/2022",
-    gender: "Male",
-    address: "Morogoro, Tanzania",
-    birthDate: "1986-04-17",
-  },
-  {
-    name: "Mariam Juma",
-    email: "mariam.juma@example.com",
-    mobile: "+255 767 901 234",
-    role: ROLE.CASHIER,
-    status: STATUS.INACTIVE,
-    passport:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-9.png",
-    course: "Psychology",
-    academicYear: "2023/2024",
-    gender: "Female",
-    address: "Tanga, Tanzania",
-    birthDate: "1994-10-12",
-  },
-  {
-    name: "Hassan Said",
-    email: "hassan.said@example.com",
-    mobile: "+255 754 012 345",
-    role: ROLE.CASHIER,
-    status: STATUS.ACTIVE,
-    passport:
-      "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-10.png",
-    course: "Information Technology",
-    academicYear: "2022/2023",
-    gender: "Male",
-    address: "Singida, Tanzania",
-    birthDate: "1991-01-29",
-  },
-];
+export interface STAFF_DATA_TYPE {
+  username: string;
+  email: string;
+  mobile: string;
+  role: ROLE;
+  status: STAFF_STATUS;
+  passport: string;
+  course: string;
+  academicYear: string;
+  gender: string;
+  address: string;
+  birthDate: string;
+}
+
+// Function to fetch data from Firebase
+async function fetchDataFromFirebase(): Promise<FirebaseStaffData[]> {
+  const firebaseData: FirebaseStaffData[] = []; // Explicitly type firebaseData as FirebaseStaffData[]
+  try {
+    const snapshot = await get(ref(database, 'Staff Members'));
+    snapshot.forEach((childSnapshot) => {
+      firebaseData.push(childSnapshot.val());
+    });
+    return firebaseData;
+  } catch (error) {
+    console.error('Error fetching data from Firebase:', error);
+    return []; // Return an empty array in case of error
+  }
+}
+
+async function mergeData() {
+  try {
+    const firebaseStaffData = await fetchDataFromFirebase();
+
+    STAFF_DATA.splice(0, STAFF_DATA.length, ...firebaseStaffData);
+    
+  } catch (error) {
+    console.error('Error merging data:', error);
+  }
+}
+
+
+
+
+// Define STAFF_DATA as empty array initially
+ let STAFF_DATA: STAFF_DATA_TYPE[] = [];
+
+// Call mergeData() to initiate the merging process
+mergeData();
+
+// Export the STAFF_DATA array after it's been updated with Firebase data
+export { STAFF_DATA };

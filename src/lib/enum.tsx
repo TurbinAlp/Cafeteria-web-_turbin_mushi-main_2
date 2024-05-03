@@ -39,13 +39,17 @@ export enum GENDER {
 export enum STATUS {
   AVAILABLE = "Available",
   NOT_AVAILABLE = "Not Available",
+}
+
+export enum STAFF_STATUS {
   ACTIVE = "Active",
   INACTIVE = "Inactive",
 }
 
 export enum CATEGORY {
-  VIP = "VIP",
-  NORMAL = "NORMAL",
+  BREAKFAST = "BreakFast",
+  LUNCH = "Lunch",
+  DINNER  = "Dinner",
 }
 
 export enum ROLE {

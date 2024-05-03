@@ -23,7 +23,7 @@ const SelectCategory: React.FC<SelectCategoryProps> = ({
     <Select
       label={label}
       value={value}
-      data={[CATEGORY.NORMAL, CATEGORY.VIP]}
+      data={[CATEGORY.BREAKFAST, CATEGORY.LUNCH, CATEGORY.DINNER]}
       variant={variant}
       placeholder={placeholder}
       onChange={(value: string | null) => {

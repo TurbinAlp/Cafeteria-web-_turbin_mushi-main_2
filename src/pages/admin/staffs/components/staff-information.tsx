@@ -12,7 +12,7 @@ import {
   Title,
 } from "@mantine/core";
 import { color } from "../../../../lib/colors";
-import { STATUS } from "../../../../lib/enum";
+import { STAFF_STATUS } from "../../../../lib/enum";
 
 type StaffInformationProps = {
   data: { email: string | null | undefined };
@@ -158,7 +158,7 @@ const StaffInformation: React.FC<StaffInformationProps> = ({ data }) => {
                 <Flex justify="start" align={"center"} direction={"row"}>
                   <Text w={"35%"}>Status</Text>
                   <Text w={"65%"} c={`${color.dimmed}`}>
-                    {selectedStaff?.status === STATUS.ACTIVE ? (
+                    {selectedStaff?.status === STAFF_STATUS.ACTIVE ? (
                       <Badge bg={`${color.green}`} w={120} py={"xs"}>
                         {selectedStaff?.status}
                       </Badge>

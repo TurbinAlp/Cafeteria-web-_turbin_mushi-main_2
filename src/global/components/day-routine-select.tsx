@@ -1,14 +1,14 @@
 import { Select } from "@mantine/core";
 import React from "react";
-import { DAY_ROUTINE } from "../../lib/enum";
+import { STATUS } from "../../lib/enum";
 
 type SelectDayRoutineProps = {
-  value: DAY_ROUTINE | null;
+  value: STATUS | null;
   label: string;
   variant: string;
   error: React.ReactNode;
   placeholder: string;
-  onChange: (value: DAY_ROUTINE) => void;
+  onChange: (value: STATUS) => void;
 };
 
 const SelectDayRoutine: React.FC<SelectDayRoutineProps> = ({
@@ -24,12 +24,12 @@ const SelectDayRoutine: React.FC<SelectDayRoutineProps> = ({
       label={label}
       value={value}
       placeholder={placeholder}
-      data={[DAY_ROUTINE.MORNING, DAY_ROUTINE.AFTERNOON, DAY_ROUTINE.NIGHT]}
+      data={[STATUS.AVAILABLE, STATUS.NOT_AVAILABLE]}
       variant={variant}
       error={error}
       onChange={(value: string | null) => {
-        if (Object.values(DAY_ROUTINE).includes(value as DAY_ROUTINE)) {
-          onChange(value as DAY_ROUTINE);
+        if (Object.values(STATUS).includes(value as STATUS)) {
+          onChange(value as STATUS);
         }
       }}
     />
