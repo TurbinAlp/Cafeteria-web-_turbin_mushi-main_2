@@ -8,6 +8,7 @@ import AdminDashboard from "./dashboard/admin-dashboard";
 import AdminMenu from "./menu/admin-menu";
 import AdminStaff from "./staffs/admin-staff";
 import Customer from "./customers/customer";
+import Feedback from "./feeback/feedback";
 
 const AdminPanel: React.FC = () => {
   const [opened, { toggle }] = useDisclosure();
@@ -39,6 +40,7 @@ const AdminPanel: React.FC = () => {
           {active === NAV_LINK.MENU && <AdminMenu />}
           {active === NAV_LINK.STAFF && <AdminStaff />}
           {active === NAV_LINK.CUSTOMER && <Customer />}
+          {active === NAV_LINK.FEEDBACK && <Feedback />}
         </Stack>
       </AppShell.Main>
     </AppShell>

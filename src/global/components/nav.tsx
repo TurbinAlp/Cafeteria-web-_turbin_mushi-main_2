@@ -2,6 +2,7 @@ import {
   IconChefHat,
   IconDashboard,
   IconLogout,
+  IconMessageReport,
   IconUserCircle,
   IconUserHeart,
 } from "@tabler/icons-react";
@@ -15,6 +16,7 @@ const nav_links = [
   { link: "", label: NAV_LINK.STAFF, icon: IconUserCircle },
   { link: "", label: NAV_LINK.CUSTOMER, icon: IconUserHeart },
   { link: "", label: NAV_LINK.MENU, icon: IconChefHat },
+  { link: "", label: NAV_LINK.FEEDBACK, icon: IconMessageReport },
 ];
 
 type NavigationBarProps = {
