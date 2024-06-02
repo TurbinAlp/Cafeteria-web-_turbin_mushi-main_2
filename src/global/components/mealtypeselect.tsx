@@ -1,17 +1,17 @@
 import React from "react";
-import { CATEGORY } from "../../lib/enum";
+import { MEALTYPE } from "../../lib/enum";
 import { Select } from "@mantine/core";
 
-type SelectCategoryProps = {
-  value: CATEGORY | null;
+type SelectMealTypeProps = {
+  value: MEALTYPE | null;
   label: string;
   variant: string;
   error: React.ReactNode;
   placeholder: string;
-  onChange: (value: CATEGORY) => void;
+  onChange: (value: MEALTYPE) => void;
 };
 
-const SelectCategory: React.FC<SelectCategoryProps> = ({
+const SelectMealType: React.FC<SelectMealTypeProps> = ({
   label,
   onChange,
   value,
@@ -23,12 +23,12 @@ const SelectCategory: React.FC<SelectCategoryProps> = ({
     <Select
       label={label}
       value={value}
-      data={[CATEGORY.VIP, CATEGORY.REGULAR]}
+      data={[MEALTYPE.BREAKFAST, MEALTYPE.LUNCH, MEALTYPE.DINNER]}
       variant={variant}
       placeholder={placeholder}
       onChange={(value: string | null) => {
-        if (Object.values(CATEGORY).includes(value as CATEGORY)) {
-          onChange(value as CATEGORY);
+        if (Object.values(MEALTYPE).includes(value as MEALTYPE)) {
+          onChange(value as MEALTYPE);
         }
       }}
       error={error}
@@ -36,4 +36,4 @@ const SelectCategory: React.FC<SelectCategoryProps> = ({
   );
 };
 
-export default SelectCategory;
+export default SelectMealType;

@@ -52,23 +52,34 @@ const Authentication: React.FC = () => {
   const handleOnSubmit = () => {
     form.reset();
 
-    const success = loginUnser({
-      email: form.values.email,
-      password: form.values.password,
-    });
-
-    if (success !== null) {
-      setTimeout(() => {
-        showNotification({
-          id: "login",
-          message: success,
-          title: "Authentication",
-          color: color.green,
-          icon: <IconCheck />,
-        });
-        setLoading(false);
-        navigateAdminPanel();
-      }, 5000);
+    if (form.values.email === 'staff@gmail.com' && form.values.password === '1234567') {
+      const success = loginUnser({
+        email: form.values.email,
+        password: form.values.password,
+      });
+  
+      if (success !== null) {
+        setTimeout(() => {
+          showNotification({
+            id: "login",
+            message: success,
+            title: "Authentication",
+            color: color.green,
+            icon: <IconCheck />,
+          });
+          setLoading(false);
+          navigateAdminPanel();
+        }, 5000);
+      }
+    } else {
+      // Notify the user that the email or password is incorrect
+      showNotification({
+        id: "login",
+        message: "Incorrect email or password.",
+        title: "Authentication",
+        color: color.red,
+        icon: <IconCheck />,
+      });
     }
   };
 

@@ -19,6 +19,27 @@ import SingleImageUpload from "../../../../global/components/single-image-upload
 import { DateInput, DateValue } from "@mantine/dates";
 import AuthContext from "../../../../context/auth-context";
 import DotLoader from "../../../../global/components/dot-loader";
+import { initializeApp } from "firebase/app";
+import { getStorage, ref as storageRefe, uploadString, getDownloadURL } from "firebase/storage";
+import { getDatabase, ref, push, DatabaseReference } from "firebase/database"; 
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAndKeLngrxV4Hn3RE3YnLJ5-_DvtMfGos",
+  authDomain: "dtcs-app.firebaseapp.com",
+  databaseURL: "https://dtcs-app-default-rtdb.firebaseio.com",
+  projectId: "dtcs-app",
+  storageBucket: "dtcs-app.appspot.com",
+  messagingSenderId: "638755640647",
+  appId: "1:638755640647:web:33289ec257f94bebb76862",
+  measurementId: "G-LHHDQLFBDL"
+};
+
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+const storage = getStorage(app);
 
 type StaffRegistrationFormProps = {
   closeStaffRegModalForm: () => void;
@@ -82,17 +103,86 @@ const StaffRegistrationForm: React.FC<StaffRegistrationFormProps> = ({
   const handleOnSubmit = () => {
     setLoading(true);
 
-    setTimeout(() => {
-      setLoading(false);
-      showNotification({
-        id: "register",
-        message: "Successfully registered",
-        color: color.green,
-        title: "Staff Registration",
-        icon: <IconCheck size="1rem" />,
-      });
-      closeStaffRegModalForm();
-    }, 3000);
+    const file = form.values.passport;
+
+    if (!file) {
+        setLoading(false);
+        console.error('No image selected');
+        return;
+    }
+
+    const imageName = file.name;
+
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      if (event.target && event.target.result) {
+          const passport = event.target.result as string;
+
+          // Upload image data URL to Firebase Storage
+          const storageRef = storageRefe(storage, 'menu_images/' + imageName);
+          uploadString(storageRef, passport, 'data_url')
+              .then(() => {
+                  // Get the download URL of the uploaded image
+                  getDownloadURL(storageRef)
+                      .then((url) => {
+                          const newData = {
+                              firstname: form.values.firstname,
+                              lastname: form.values.lastname,
+                              email: form.values.email,
+                              mobile: form.values.mobile,
+                              gender: form.values.gender,
+                              role: form.values.role,
+                              username: form.values.username,
+                              birthDate: form.values.birthDate,
+                              passport: url,
+                              password: "cafeteria"
+                          };
+
+                  
+                          
+                          push(ref(database, 'Staff Members'), newData)
+                              .then(() => {
+                                  setLoading(false);
+                                  showNotification({
+                                      id: 'add',
+                                      message: 'Successfully added',
+                                      color: color.green,
+                                      title: 'Menu',
+                                      icon: <IconCheck size="1rem" />,
+                                  });
+                                  closeNewMenuModalForm();
+                              })
+                              .catch((error) => {
+                                  console.error('Error adding new menu: ', error);
+                              });
+                      })
+                      .catch((error) => {
+                          console.error('Error getting download URL: ', error);
+                      });
+              })
+              .catch((error) => {
+                  console.error('Error uploading image: ', error);
+              });
+      } else {
+          setLoading(false);
+          console.error('Failed to load image');
+      }
+  };
+
+  reader.readAsDataURL(file);
+
+    // setTimeout(() => {
+    //   setLoading(false);
+    //   showNotification({
+    //     id: "register",
+    //     message: "Successfully registered",
+    //     color: color.green,
+    //     title: "Staff Registration",
+    //     icon: <IconCheck size="1rem" />,
+    //   });
+    //   closeStaffRegModalForm();
+    // }, 3000);
   };
 
   return (
@@ -257,3 +347,7 @@ const StaffRegistrationForm: React.FC<StaffRegistrationFormProps> = ({
 };
 
 export default StaffRegistrationForm;
+function closeNewMenuModalForm() {
+  throw new Error("Function not implemented.");
+}
+

@@ -1,12 +1,9 @@
-import { initializeApp } from "firebase/app";
-import { getStorage, ref as storageRefe, uploadString, getDownloadURL } from "firebase/storage";
-import { getDatabase, ref, push, DatabaseReference } from "firebase/database"; // Add this import for Realtime Database
 import { useForm } from "@mantine/form";
 import React, { useContext } from "react";
 import useShowAndUpdateNotification from "../../../../global/components/show-and-update-notification";
 import { IconCheck } from "@tabler/icons-react";
 import { color } from "../../../../lib/colors";
-import { CATEGORY, STATUS } from "../../../../lib/enum";
+import { CATEGORY, MEALTYPE, STATUS } from "../../../../lib/enum";
 import {
   Avatar,
   Button,
@@ -21,6 +18,10 @@ import SelectCategory from "../../../../global/components/category-select";
 import SingleImageUpload from "../../../../global/components/single-image-upload";
 import AuthContext from "../../../../context/auth-context";
 import DotLoader from "../../../../global/components/dot-loader";
+import SelectMealType from "../../../../global/components/mealtypeselect";
+import { initializeApp } from "firebase/app";
+import { getStorage, ref as storageRefe, uploadString, getDownloadURL } from "firebase/storage";
+import { getDatabase, ref, push, DatabaseReference } from "firebase/database"; 
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -58,14 +59,16 @@ const NewMenu: React.FC<CustomerRegistrationProps> = ({
 
   const form = useForm<{
     foodName: string;
-    foodCategory: CATEGORY | null;
+    mealType: MEALTYPE | null;
+    categoryType: CATEGORY | null;
     price: string;
     statusMode: STATUS | null;
     menuImage: File | null;
   }>({
     initialValues: {
       foodName: "",
-      foodCategory: null,
+      mealType: null,
+      categoryType:null,
       price: "",
       statusMode: null,
       menuImage: null,
@@ -73,7 +76,8 @@ const NewMenu: React.FC<CustomerRegistrationProps> = ({
     validate: {
       foodName: (val) => (val.length > 2 ? null : "Name is too short"),
 
-      foodCategory: (val) => (val === null ? "Please select a category" : null),
+      mealType: (val) => (val === null ? "Please select a mealType" : null),
+      categoryType: (val) => (val === null ? "Please select a category" : null),
       price: (val) => (val.length === 0 ? "Food price required" : null),
       statusMode: (val) =>
         val === null ? "Select food status" : null,
@@ -111,7 +115,8 @@ const NewMenu: React.FC<CustomerRegistrationProps> = ({
                         .then((url) => {
                             const newData = {
                                 foodName: form.values.foodName,
-                                foodCategory: form.values.foodCategory,
+                                mealType: form.values.mealType,
+                                categoryType: form.values.categoryType,
                                 price: form.values.price,
                                 statusMode: form.values.statusMode,
                                 menuImage: url, // Store the URL of the uploaded image
@@ -120,13 +125,13 @@ const NewMenu: React.FC<CustomerRegistrationProps> = ({
                             // Push the new data to the appropriate subcollection in the database
                             let subcollectionRef: DatabaseReference | null = null;
 
-                            const foodCategory = form.values.foodCategory;
-                            if (foodCategory !== null) {
-                                if (foodCategory === CATEGORY.BREAKFAST) {
+                            const mealType = form.values.mealType;
+                            if (mealType !== null) {
+                                if (mealType === MEALTYPE.BREAKFAST) {
                                     subcollectionRef = ref(database, 'MENUS/Breakfast');
-                                } else if (foodCategory === CATEGORY.LUNCH) {
+                                } else if (mealType === MEALTYPE.LUNCH) {
                                     subcollectionRef = ref(database, 'MENUS/Lunch');
-                                } else if (foodCategory === CATEGORY.DINNER) {
+                                } else if (mealType === MEALTYPE.DINNER) {
                                     subcollectionRef = ref(database, 'MENUS/Dinner');
                                 }
                             }
@@ -198,17 +203,28 @@ const NewMenu: React.FC<CustomerRegistrationProps> = ({
           </Grid.Col>
 
           <Grid.Col span={{ base: 12, md: 6 }}>
-            <SelectCategory
-              placeholder="Food category"
-              error={form.errors.foodCategory}
+            <SelectMealType
+              placeholder="Meal Type"
+              error={form.errors.mealType}
               variant="default"
-              label="Food Category"
-              value={form.values.foodCategory}
-              onChange={(value) => form.setFieldValue("foodCategory", value)}
+              label="Meal Type"
+              value={form.values.mealType}
+              onChange={(value) => form.setFieldValue("mealType", value)}
             />
           </Grid.Col>
 
-          <Grid.Col span={{ base: 12 }}>
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            <SelectCategory
+              placeholder="Food category"
+              error={form.errors.categoryType}
+              variant="default"
+              label="Food Category"
+              value={form.values.categoryType}
+              onChange={(value) => form.setFieldValue("categoryType", value)}
+            />
+          </Grid.Col>
+
+          <Grid.Col span={{ base: 12 , md: 6}}>
             <TextInput
               type="number"
               label="Price"

@@ -3,7 +3,9 @@ export enum NAV_LINK {
   MENU = "Menu",
   STAFF = "Staff",
   CUSTOMER = "Customer",
-  FEEDBACK = "Report"
+  FEEDBACK = "Feedback",
+  REPORT = "Report",
+
 }
 
 export enum TIME_RANGE {
@@ -48,6 +50,11 @@ export enum STAFF_STATUS {
 }
 
 export enum CATEGORY {
+  VIP = "Vip",
+  REGULAR = "Regular",
+}
+
+export enum MEALTYPE {
   BREAKFAST = "BreakFast",
   LUNCH = "Lunch",
   DINNER  = "Dinner",

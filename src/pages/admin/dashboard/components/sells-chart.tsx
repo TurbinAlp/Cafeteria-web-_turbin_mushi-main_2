@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   Paper,
   Group,
@@ -7,10 +8,6 @@ import {
   Space,
 } from "@mantine/core";
 import { IconDots } from "@tabler/icons-react";
-import React, { useState } from "react";
-import { color } from "../../../../lib/colors";
-import { TIME_RANGE } from "../../../../lib/enum";
-import useRandomNumberGenerator from "../../../../global/function/random-number-generator";
 import {
   Bar,
   BarChart,
@@ -22,6 +19,9 @@ import {
   YAxis,
 } from "recharts";
 import SelectTimeRange from "../../../../global/components/time-range-select";
+import { color } from "../../../../lib/colors";
+import { TIME_RANGE } from "../../../../lib/enum";
+import { MenuType, fetchDataFromDatabase } from "../../report/request/request-data";
 
 type statsType = {
   name: string;
@@ -30,59 +30,28 @@ type statsType = {
 };
 
 const SellsChart: React.FC = () => {
-  const { totalSalesGenerator } = useRandomNumberGenerator();
+  //const { totalSalesGenerator } = useRandomNumberGenerator();
 
   const [salesTime, setSalesTime] = useState<TIME_RANGE | null>(
     TIME_RANGE.TODAY
   );
+  const [stats, setStats] = useState<statsType[]>([]);
 
-  const stats: statsType[] = [
-    {
-      name: "Ugali Maharage",
-      time: salesTime,
-      price: Number(totalSalesGenerator()),
-    },
-    {
-      name: "Chipsi Yai",
-      price: Number(totalSalesGenerator()),
-      time: salesTime,
-    },
-    {
-      name: "Kuku wa Kukaanga",
-      price: Number(totalSalesGenerator()),
-      time: salesTime,
-    },
-    {
-      name: "Makange Kuku",
-      price: Number(totalSalesGenerator()),
-      time: salesTime,
-    },
-    {
-      name: "Kuku Rosti",
-      price: Number(totalSalesGenerator()),
-      time: salesTime,
-    },
-    {
-      name: "Ugali Nyama",
-      price: Number(totalSalesGenerator()),
-      time: salesTime,
-    },
-    {
-      name: "Wali Maharage",
-      price: Number(totalSalesGenerator()),
-      time: salesTime,
-    },
-    {
-      name: "Wali Makange Nyama",
-      price: Number(totalSalesGenerator()),
-      time: salesTime,
-    },
-    {
-      name: "Wali Samaki",
-      price: Number(totalSalesGenerator()),
-      time: salesTime,
-    },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetchDataFromDatabase();
+      if (result && result.data) { // Check if result and result.data exist
+        const newStats: statsType[] = result.data.map((menuItem: MenuType) => ({
+          name: menuItem.menuName,
+          price: Number(menuItem.menuPrice),
+          time: salesTime,
+        }));
+        setStats(newStats);
+      }
+    };
+    fetchData();
+  }, [salesTime]);
+  
 
   return (
     <Paper p={"md"} shadow="md" w={"100%"} radius={"md"} bg={`${color.white}`}>

@@ -306,7 +306,7 @@ const StaffTable: React.FC = () => {
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("status")}
                 >
-                  Street
+                  Status
                 </Th>
                 <Th sorted={false} reversed={false} onSort={() => {}}>
                   Actions

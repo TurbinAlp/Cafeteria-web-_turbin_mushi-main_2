@@ -3,6 +3,7 @@ import {
   IconDashboard,
   IconLogout,
   IconMessageReport,
+  IconReport,
   IconUserCircle,
   IconUserHeart,
 } from "@tabler/icons-react";
@@ -16,6 +17,7 @@ const nav_links = [
   { link: "", label: NAV_LINK.STAFF, icon: IconUserCircle },
   { link: "", label: NAV_LINK.CUSTOMER, icon: IconUserHeart },
   { link: "", label: NAV_LINK.MENU, icon: IconChefHat },
+  { link: "", label: NAV_LINK.REPORT, icon: IconReport },
   { link: "", label: NAV_LINK.FEEDBACK, icon: IconMessageReport },
 ];
 

@@ -1,12 +1,6 @@
 import React from "react";
 import {
-  Button,
-  Center,
-  Group,
-  Select,
-  SimpleGrid,
-  Space,
-  Text,
+  Button, Center, Group, Select, SimpleGrid, Space, Text,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { DateInput, DateValue } from "@mantine/dates";
@@ -165,9 +159,10 @@ const CustomizeReport: React.FC<CustomizeReportProps> = ({ close }) => {
       <Space h={"md"} />
 
       <Center>
-        <Button w={200} onClick={close}>
-          OK
-        </Button>
+      <Button w={200} onClick={() => close()}>
+        OK
+      </Button>
+
       </Center>
     </div>
   );

@@ -290,7 +290,7 @@ const CustomerTable: React.FC = () => {
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("Account_Number")}
                 >
-                  Account Number
+                  Card Number
                 </Th>
 
                 <Th
@@ -300,13 +300,13 @@ const CustomerTable: React.FC = () => {
                 >
                   Amount
                 </Th>
-                <Th
+                {/* <Th
                   sorted={sortBy === "cardNumber"}
                   reversed={reverseSortDirection}
                   onSort={() => setSorting("cardNumber")}
                 >
                   Card Number
-                </Th>
+                </Th> */}
 
                 <Th sorted={false} reversed={false} onSort={() => {}}>
                   Actions

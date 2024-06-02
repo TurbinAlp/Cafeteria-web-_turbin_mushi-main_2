@@ -7,10 +7,25 @@ import {
 } from "@tabler/icons-react";
 import { color } from "../../../../lib/colors";
 import { Badge, Flex, Paper, Text, Title } from "@mantine/core";
-import { totalAmounti, totalPlatesi } from './sales-report-table';
+import { fetchDataFromDatabase } from "../request/request-data";
+import React, { useEffect } from "react";
 
 
 const useFeedbackNodes = () => {
+  const [totalPlates, setTotalPlates] = React.useState<number>(0);
+  const [totalAmount, setTotalAmount] = React.useState<number>(0);
+
+  useEffect(() => {
+    fetchDataFromDatabase().then((result) => {
+      if (result) {
+        const { totalCouponCount, totalAmount } = result;
+        setTotalPlates(totalCouponCount);
+        setTotalAmount(totalAmount);
+      }
+    });
+  }, []);
+
+
   const Sales = () => {
     return (
       <Paper p={"md"} radius={"md"}>
@@ -19,7 +34,7 @@ const useFeedbackNodes = () => {
           <Flex direction={"row"} justify={"space-between"} align={"center"}>
             <div>
               <Title order={4} c={"gold"}>
-                {totalAmounti} Tshs 
+                {totalAmount} Tshs 
               </Title>
               <Text c={`${color.dimmed}`}>Today's Sale</Text>
             </div>
@@ -45,7 +60,7 @@ const useFeedbackNodes = () => {
           <Flex direction={"row"} justify={"space-between"} align={"center"}>
             <div>
               <Title order={4} c={`${color.blue_800}`}>
-                {totalPlatesi}
+                {totalPlates}
               </Title>
               <Text c={`${color.dimmed}`}>Today's Sold Plates</Text>
             </div>
@@ -99,7 +114,7 @@ const useFeedbackNodes = () => {
               <Title order={4} c={`${color.blue_500}`}>
                 2
               </Title>
-              <Text c={`${color.dimmed}`}>Today's Finished Plates</Text>
+              <Text c={`${color.dimmed}`}>Today's Unavailable dishes</Text>
             </div>
             <Badge
               leftSection={<IconArrowUp />}
