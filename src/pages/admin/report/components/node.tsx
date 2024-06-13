@@ -8,22 +8,24 @@ import {
 import { color } from "../../../../lib/colors";
 import { Badge, Flex, Paper, Text, Title } from "@mantine/core";
 import { fetchDataFromDatabase } from "../request/request-data";
-import React, { useEffect } from "react";
+import React from "react";
 
 
-const useFeedbackNodes = () => {
+const useFeedbackNodes = (date: Date | null) => {
   const [totalPlates, setTotalPlates] = React.useState<number>(0);
   const [totalAmount, setTotalAmount] = React.useState<number>(0);
 
-  useEffect(() => {
-    fetchDataFromDatabase().then((result) => {
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetchDataFromDatabase(date ?? new Date());
       if (result) {
         const { totalCouponCount, totalAmount } = result;
         setTotalPlates(totalCouponCount);
         setTotalAmount(totalAmount);
       }
-    });
-  }, []);
+    };
+    fetchData();
+  }, [date]);
 
 
   const Sales = () => {

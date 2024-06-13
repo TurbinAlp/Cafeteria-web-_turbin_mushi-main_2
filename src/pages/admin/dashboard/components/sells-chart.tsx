@@ -29,8 +29,13 @@ type statsType = {
   time: string | null;
 };
 
-const SellsChart: React.FC = () => {
+type SalesReportTableProps = {
+  date: Date;
+}
+
+const SellsChart: React.FC<SalesReportTableProps> = ({date}) => {
   //const { totalSalesGenerator } = useRandomNumberGenerator();
+  const [salesData, setSalesData] = useState<MenuType[]>([]);
 
   const [salesTime, setSalesTime] = useState<TIME_RANGE | null>(
     TIME_RANGE.TODAY
@@ -38,19 +43,23 @@ const SellsChart: React.FC = () => {
   const [stats, setStats] = useState<statsType[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await fetchDataFromDatabase();
-      if (result && result.data) { // Check if result and result.data exist
+    setSalesData([]);
+    fetchData();
+  }, [date]);
+
+  const fetchData = () => {
+    fetchDataFromDatabase(date).then((result) => {
+      if (result && result.data) { 
         const newStats: statsType[] = result.data.map((menuItem: MenuType) => ({
           name: menuItem.menuName,
           price: Number(menuItem.menuPrice),
           time: salesTime,
         }));
+        
         setStats(newStats);
       }
-    };
-    fetchData();
-  }, [salesTime]);
+    });
+  }
   
 
   return (
@@ -58,7 +67,7 @@ const SellsChart: React.FC = () => {
       <Group justify="space-between">
         <Group>
           <Title order={2} c={`${color.blue_950}`}>
-            Sales
+            Saleees
           </Title>
           <Divider orientation="vertical" size={"lg"} />
           <Title order={3} c={`${color.dimmed}`}>

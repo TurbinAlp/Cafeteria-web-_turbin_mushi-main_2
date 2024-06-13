@@ -9,18 +9,19 @@ import CustomizeReport from "./customize-report";
 
 type SalesReportTableProps = {
   date: Date;
+  setSalesData: (data: MenuType[]) => void;
 }
 
-const SalesReportTable: React.FC<SalesReportTableProps> = ({date}) => {
+const SalesReportTable: React.FC<SalesReportTableProps> = ({date, setSalesData }) => {
   const [opened, { open }] = useDisclosure();
   const [search, setSearch] = useState<string>("");
   const [totalPlates, setTotalPlates] = useState<number>(0);
   const [totalAmount, setTotalAmount] = useState<number>(0);
-  const [salesData, setSalesData] = useState<MenuType[]>([]);
+  const [salesData, setSalesDataState] = useState<MenuType[]>([]);
   const [filteredData, setFilteredData] = useState<MenuType[]>([]);
 
   useEffect(() => {
-    setSalesData([]);
+    setSalesDataState([]);
     fetchData();
   }, [date]);
 
@@ -28,10 +29,10 @@ const SalesReportTable: React.FC<SalesReportTableProps> = ({date}) => {
     fetchDataFromDatabase(date).then((result) => {
       if (result) {
         const { data, totalCouponCount, totalAmount } = result;
+        setSalesDataState(data);
         setSalesData(data);
         setTotalPlates(totalCouponCount);
         setTotalAmount(totalAmount);
-
       }
     });
   }
@@ -146,7 +147,8 @@ const SalesReportTable: React.FC<SalesReportTableProps> = ({date}) => {
           duration: 600,
           timingFunction: "linear",
         }}
-        closeOnClickOutside={false}
+        
+        closeOnClickOutside={true}
       >
         <CustomizeReport close={close} />
       </Modal>
