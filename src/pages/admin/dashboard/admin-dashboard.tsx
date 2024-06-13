@@ -15,10 +15,11 @@ import useRandomNumberGenerator from "../../../global/function/random-number-gen
 import ReactNodeSwiper from "../../../global/components/reactNote-swiper";
 import MenuTable from "./components/menu-table";
 import SellsChart from "./components/sells-chart";
-import SelectTimeRange from "../../../global/components/time-range-select";
+// import SelectTimeRange from "../../../global/components/time-range-select";
 import YearlySalesStats from "./components/yearly-sales-stats";
 import { getDatabase, ref, get } from "firebase/database";
 import { initializeApp } from "firebase/app";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyAndKeLngrxV4Hn3RE3YnLJ5-_DvtMfGos",
@@ -41,12 +42,12 @@ const AdminDashboard: React.FC = () => {
   const [salesTime, setSalesTime] = useState<TIME_RANGE | null>(
     TIME_RANGE.TODAY
   );
-  const [totalSales, setTotalSales] = useState<string>(totalSalesGenerator);
+  const [totalSales, setTotalSales] = useState<string>("0");
 
   const [revenueTime, setRevenueTime] = useState<TIME_RANGE | null>(
     TIME_RANGE.TODAY
   );
-  const [totalRevenue, setTotalRevenue] = useState<string>(totalSalesGenerator);
+  const [totalRevenue, setTotalRevenue] = useState<string>("0");
 
   useEffect(() => {
     const fetchSalesData = async () => {

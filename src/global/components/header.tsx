@@ -1,6 +1,6 @@
 import { Group, Flex, Avatar, Burger, Text } from "@mantine/core";
 import React from "react";
-import logo from "../../assets/logo.jpg";
+import logo from "../../assets/logo.png";
 import { UserButton } from "./user-button";
 
 type HomeHeaderProps = {
