@@ -18,6 +18,7 @@ import {
   rem,
 } from "@mantine/core";
 import {
+  IconCheck,
   IconChevronDown,
   IconChevronUp,
   IconEye,
@@ -27,13 +28,14 @@ import {
   IconStatusChange,
   IconTrash,
 } from "@tabler/icons-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "../../../../global/css/TableSort.module.css";
-import { STAFF_DATA, STAFF_DATA_TYPE } from "../staff-data";
+import { STAFF_DATA, STAFF_DATA_TYPE, deleteStaffFromFirebase, fetchDataFromFirebase } from "../staff-data";
 import { useDisclosure } from "@mantine/hooks";
 import { STAFF_STATUS } from "../../../../lib/enum";
 import { color } from "../../../../lib/colors";
 import StaffInformation from "./staff-information";
+import useShowAndUpdateNotification from "../../../../global/components/show-and-update-notification";
 
 interface ThProps {
   children: React.ReactNode;
@@ -41,6 +43,8 @@ interface ThProps {
   sorted: boolean;
   onSort(): void;
 }
+
+const { showNotification } = useShowAndUpdateNotification();
 
 function Th({ children, reversed, sorted, onSort }: ThProps) {
   const Icon = sorted
@@ -138,6 +142,41 @@ const StaffTable: React.FC = () => {
     );
   };
 
+  const handleDelete = async (staffId: string) => {
+    try {
+      await deleteStaffFromFirebase(staffId);
+      // Show notification
+      showNotification({
+        id: "delete",
+        message: "Staff member successfully deleted.",
+        title: "Deletion",
+        color: "red",
+        icon: <IconCheck />,
+      });
+      // Remove the deleted staff member from the local state
+      setSortedData((prevData) => prevData.filter((staff) => staff.id !== staffId));
+    } catch (error) {
+      console.error("Error deleting staff member:", error);
+      // Show error notification
+      showNotification({
+        id: "delete-error",
+        message: "Failed to delete staff member.",
+        title: "Error",
+        color: "red",
+        icon: <IconCheck />,
+      });
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchDataFromFirebase();
+      setSortedData(data);
+    };
+
+    fetchData();
+  }, []);
+
   const rows = sortedData.map((row: STAFF_DATA_TYPE, index) => (
     <Table.Tr
       key={row.username}
@@ -215,7 +254,7 @@ const StaffTable: React.FC = () => {
                     : STAFF_STATUS.ACTIVE}
                 </Group>
               </Menu.Item>
-              <Menu.Item>
+              <Menu.Item onClick={() => handleDelete(row.id)}>
                 <Group c={`${color.red}`}>
                   <IconTrash />
                   <Text>Delete</Text>

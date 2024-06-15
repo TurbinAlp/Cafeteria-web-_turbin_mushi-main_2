@@ -1,7 +1,6 @@
 import { ROLE, STAFF_STATUS } from "../../../lib/enum";
-
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, get, } from "firebase/database";
+import { getDatabase, ref, get, remove } from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -22,6 +21,7 @@ const database = getDatabase(firebase);
 
 // Define the type for staff data from Firebase
 export interface FirebaseStaffData {
+  id: string;
   username: string;
   email: string;
   mobile: string;
@@ -36,6 +36,7 @@ export interface FirebaseStaffData {
 }
 
 export interface STAFF_DATA_TYPE {
+  id: string;
   username: string;
   email: string;
   mobile: string;
@@ -49,20 +50,21 @@ export interface STAFF_DATA_TYPE {
   birthDate: string;
 }
 
-// Function to fetch data from Firebase
-async function fetchDataFromFirebase(): Promise<FirebaseStaffData[]> {
-  const firebaseData: FirebaseStaffData[] = []; // Explicitly type firebaseData as FirebaseStaffData[]
+export const fetchDataFromFirebase = async (): Promise<STAFF_DATA_TYPE[]> => {
+  // const database = getDatabase();
+  const firebaseData: STAFF_DATA_TYPE[] = [];
   try {
     const snapshot = await get(ref(database, 'Staff Members'));
     snapshot.forEach((childSnapshot) => {
-      firebaseData.push(childSnapshot.val());
+      const data = childSnapshot.val();
+      firebaseData.push({ id: childSnapshot.key, ...data });
     });
     return firebaseData;
   } catch (error) {
     console.error('Error fetching data from Firebase:', error);
-    return []; // Return an empty array in case of error
+    return [];
   }
-}
+};
 
 async function mergeData() {
   try {
@@ -75,7 +77,18 @@ async function mergeData() {
   }
 }
 
+// Function to delete staff data from Firebase
+export const  deleteStaffFromFirebase = async (staffId: string) => {
+  const database = getDatabase();
+  const staffRef = ref(database, `Staff Members/${staffId}`);
 
+  try {
+    await remove(staffRef);
+    console.log(`Staff member ${staffId} deleted successfully`);
+  } catch (error) {
+    console.error(`Error deleting staff member ${staffId}:`, error);
+  }
+}
 
 
 // Define STAFF_DATA as empty array initially

@@ -54,7 +54,7 @@ const StaffInformation: React.FC<StaffInformationProps> = ({ data }) => {
               }}
             >
               <Title order={2} c={`${color.blue_950}`}>
-                {selectedStaff?.name}
+                {selectedStaff?.username}
               </Title>
               <Text
                 c={`${color.dimmed}`}
@@ -93,7 +93,7 @@ const StaffInformation: React.FC<StaffInformationProps> = ({ data }) => {
                   lineHeight: 1.2,
                 }}
               >
-                Showing {selectedStaff?.name}'s details{" "}
+                Showing {selectedStaff?.username}'s details{" "}
               </Title>
 
               <Space h={"xs"} />
@@ -102,7 +102,7 @@ const StaffInformation: React.FC<StaffInformationProps> = ({ data }) => {
                 <Flex justify="start" align={"center"} direction={"row"}>
                   <Text w={"35%"}>Full Name</Text>
                   <Text w={"65%"} c={`${color.dimmed}`}>
-                    {selectedStaff?.name}
+                    {selectedStaff?.username}
                   </Text>
                 </Flex>
                 <Flex justify="start" align={"center"} direction={"row"}>

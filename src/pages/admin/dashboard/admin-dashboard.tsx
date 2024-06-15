@@ -8,14 +8,13 @@ import {
 import React, { useState, useEffect } from "react";
 import { color } from "../../../lib/colors";
 import {
-  IconCurrencyDollar, IconDots, IconShoppingCart, IconTransferOut,
+  IconCurrencyDollar, IconDots, IconShoppingCart,
 } from "@tabler/icons-react";
 import { TIME_RANGE } from "../../../lib/enum";
 import useRandomNumberGenerator from "../../../global/function/random-number-generator";
 import ReactNodeSwiper from "../../../global/components/reactNote-swiper";
 import MenuTable from "./components/menu-table";
 import SellsChart from "./components/sells-chart";
-// import SelectTimeRange from "../../../global/components/time-range-select";
 import YearlySalesStats from "./components/yearly-sales-stats";
 import { getDatabase, ref, get } from "firebase/database";
 import { initializeApp } from "firebase/app";
@@ -38,28 +37,24 @@ const database = getDatabase(firebaseApp);
 
 const AdminDashboard: React.FC = () => {
   const { totalSalesGenerator } = useRandomNumberGenerator();
-
-  const [salesTime, setSalesTime] = useState<TIME_RANGE | null>(
-    TIME_RANGE.TODAY
-  );
+  const [salesTime, setSalesTime] = useState<TIME_RANGE | null>(TIME_RANGE.TODAY);
   const [totalSales, setTotalSales] = useState<string>("0");
-
-  const [revenueTime, setRevenueTime] = useState<TIME_RANGE | null>(
-    TIME_RANGE.TODAY
-  );
+  const [revenueTime, setRevenueTime] = useState<TIME_RANGE | null>(TIME_RANGE.TODAY);
   const [totalRevenue, setTotalRevenue] = useState<string>("0");
+  const [date, setDate] = useState<Date>(new Date());
 
   useEffect(() => {
     const fetchSalesData = async () => {
       try {
         const today = new Date();
         const day = today.getDate();
-        const month = today.getMonth() + 1; 
+        const month = today.getMonth() + 1;
         const year = today.getFullYear();
 
         const formattedDate = `${day}-${month}-${year}`;
+        setDate(today);
 
-      const couponsRef = ref(database, `Coupons/Coupons Used/${formattedDate}`);
+        const couponsRef = ref(database, `Coupons/Coupons Used/${formattedDate}`);
         const snapshot = await get(couponsRef);
 
         if (snapshot.exists()) {
@@ -260,7 +255,7 @@ const AdminDashboard: React.FC = () => {
 
       <Space h={"md"} />
 
-      <SellsChart />
+      <SellsChart date={date}/>
     </Container>
   );
 };

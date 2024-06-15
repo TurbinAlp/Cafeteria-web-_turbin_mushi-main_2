@@ -21,7 +21,7 @@ import AuthContext from "../../../../context/auth-context";
 import DotLoader from "../../../../global/components/dot-loader";
 import { initializeApp } from "firebase/app";
 import { getStorage, ref as storageRefe, uploadString, getDownloadURL } from "firebase/storage";
-import { getDatabase, ref, push, DatabaseReference } from "firebase/database"; 
+import { getDatabase, ref, push } from "firebase/database"; 
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -148,7 +148,7 @@ const StaffRegistrationForm: React.FC<StaffRegistrationFormProps> = ({
                                       id: 'add',
                                       message: 'Successfully added',
                                       color: color.green,
-                                      title: 'Menu',
+                                      title: 'New user',
                                       icon: <IconCheck size="1rem" />,
                                   });
                                   closeNewMenuModalForm();

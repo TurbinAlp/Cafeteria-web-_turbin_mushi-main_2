@@ -69,7 +69,7 @@ const Authentication: React.FC = () => {
           });
           setLoading(false);
           navigateAdminPanel();
-        }, 5000);
+        }, 1000);
       }
     } else {
       // Notify the user that the email or password is incorrect

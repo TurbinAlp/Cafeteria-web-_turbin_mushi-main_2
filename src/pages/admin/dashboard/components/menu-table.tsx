@@ -38,6 +38,11 @@ const MenuTable: React.FC = () => {
   const [menus, setMenus] = useState<any[]>([]);
   const [selectedMenu, setSelectedMenu] = useState<any>(null);
   const [filteredItems, setFilteredItems] = useState<any[]>([]);
+  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+
+  const handleMouseEnter = (index: number) => { setHoveredItem(index); };
+
+  const handleMouseLeave = () => { setHoveredItem(null); };
 
   interface MenuItem {
   name: string;
@@ -126,9 +131,23 @@ const handleMenuSelect = (menu: MenuItem) => {
       <Table.ScrollContainer minWidth={700} type="native" mah={380}>
         <Table horizontalSpacing="md" verticalSpacing="xs" layout="fixed">
         <Table.Tbody>
+            <Table.Tr>
+              <Table.Th>Preview</Table.Th>
+              <Table.Th>Food Name</Table.Th>
+              <Table.Th>Price</Table.Th>
+              <Table.Th>Status</Table.Th>
+            </Table.Tr>
+          </Table.Tbody>
+        <Table.Tbody>
         {filteredItems.map((item, index) => (
           <React.Fragment key={index}>
-            <Table.Tr>
+            <Table.Tr 
+             onMouseEnter={() => handleMouseEnter(index)}
+             onMouseLeave={handleMouseLeave}
+            style={{
+              backgroundColor:
+                hoveredItem === index ? color.semi_transparent_blue : color.white,
+            }}>
               <Table.Td>
                 <Avatar src={item.menuImage} radius="md" size={"lg"} />
               </Table.Td>

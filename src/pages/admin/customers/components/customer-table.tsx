@@ -30,7 +30,7 @@ import {
 } from "@tabler/icons-react";
 import { CUSTOMER_DATA, CUSTOMER_TYPE } from "./data";
 import { useDisclosure } from "@mantine/hooks";
-// import CustomerInformation from "./customer-informatin";
+import CustomerInformation from "./customer-information";
 
 interface ThProps {
   children: React.ReactNode;
@@ -172,7 +172,6 @@ const CustomerTable: React.FC = () => {
       <Table.Td>{row.Gender}</Table.Td>
       <Table.Td>{row.Account_Number}</Table.Td>
       <Table.Td>{row.Amount}</Table.Td>
-      <Table.Td>{row.cardNumber}</Table.Td>
 
       <Table.Td>
         <Group>
@@ -233,7 +232,7 @@ const CustomerTable: React.FC = () => {
       >
         <Divider size={"sm"} />
 
-        {/* <CustomerInformation data={{ email: selectedStaff?.email }} /> */}
+        <CustomerInformation data={{ email: selectedStaff?.email }} />
       </Modal>
 
       <Paper p={30} radius="md" shadow="sm">
